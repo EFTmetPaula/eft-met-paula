@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wat is EFT?</title>
+    <style>
+        :root {
+            --primary-color: #4d6a66;
+            --secondary-color: #4d6a66;
+            --text-color: #2c3e50;
+            --accent-color: #4d6a66;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            padding: 20px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: white;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="range"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: white;
+        }
+
+        input[type="text"]::placeholder {
+            color: white;
+            font-style: italic;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 20px;
+            background: linear-gradient(to right, #4CAF50, #FF0000);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .suds-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .suds-value {
+            font-size: 1.2em;
+            color: white;
+            font-weight: bold;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(77, 106, 102, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Wat is EFT?</h1>
+            
+            <div class="intro">
+                <video src="avatar/uitleg-eft.mp4" class="point-image" controls>
+    Je browser ondersteunt de videospeler niet. Download de video <a href="avatar/kruin.mp4">hier</a>.
+</video>
+            </div>
+
+            
+    <script>
+    
+            // Navigeer naar de tapping oefenpagina
+            window.location.href = 'tapping-sessie.html';
+        }
+    </script>
+</body>
+</html>
