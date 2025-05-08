@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /kloppunten/
+
+Sitemap: https://www.paulasangers.nl/sitemap.xml 
