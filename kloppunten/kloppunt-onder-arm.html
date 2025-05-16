@@ -331,17 +331,11 @@
             speech.volume = 0.9;
 
             const voices = window.speechSynthesis.getVoices();
-            // 1. Microsoft Hanna Online
-            let chosenVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
-            // 2. Xander of Claire (voor iOS)
-            if (!chosenVoice) chosenVoice = voices.find(v => (v.name.includes('Xander') || v.name.includes('Claire')) && v.lang === 'nl-NL');
-            // 3. nl-NL-Wavenet-A of Google Nederlands (voor Android/Chrome)
-            if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-A') && v.lang === 'nl-NL');
-            if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('Google') && v.lang === 'nl-NL');
-            // 4. Anders: eerste Nederlandse stem
-            if (!chosenVoice) chosenVoice = voices.find(v => v.lang === 'nl-NL');
-            // Fallback: eerste stem
-            speech.voice = chosenVoice || voices[0];
+            if (voices.length > 0) {
+                console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
+                const dutchVoice = voices.find(v => v.lang === 'nl-NL');
+                speech.voice = dutchVoice || voices[0];
+            }
         }
 
         function startEFTOnderArm() {

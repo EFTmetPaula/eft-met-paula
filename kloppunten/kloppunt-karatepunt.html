@@ -402,10 +402,9 @@
             speech.volume = 0.9;
 
             const voices = window.speechSynthesis.getVoices();
-            // Kies altijd Microsoft Hanna Online als die er is
-            const hannaVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
+            console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
             const dutchVoice = voices.find(v => v.lang === 'nl-NL');
-            speech.voice = hannaVoice || dutchVoice || voices[0];
+            speech.voice = dutchVoice || voices[0];
         }
     </script>
 </body>
