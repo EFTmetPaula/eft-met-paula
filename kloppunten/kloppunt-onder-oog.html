@@ -249,33 +249,53 @@
         let isSessionActive = false;
         let isPaused = false;
         let speech = null;
+        let repeatCount = 0;
+        const maxRepeats = 1;
+        let isPlaying = true;
+        let pageStartTime = Date.now();
 
         // Laad opgeslagen gegevens
         const situation = localStorage.getItem('eftSituation') || 'deze situatie';
         
-        // Maak een mooie zin van de situatie
-        let formattedSituation = situation;
-        if (situation.toLowerCase().startsWith('omdat')) {
-            formattedSituation = situation.substring(7).trim(); // Verwijder 'omdat'
-        }
-        
-        // Zorg dat de zin begint met 'ik' en het werkwoord direct erna komt
-        if (!formattedSituation.toLowerCase().startsWith('ik')) {
-            // Als er geen 'ik' in staat, voeg het toe
-            formattedSituation = "ik " + formattedSituation.toLowerCase();
-        } else {
-            // Als er wel 'ik' in staat, zorg dat het werkwoord direct erna komt
-            formattedSituation = formattedSituation.toLowerCase();
-            if (formattedSituation.includes(' ben ')) {
-                formattedSituation = formattedSituation.replace(' ben ', ' ben ');
-            } else if (formattedSituation.includes(' ben ')) {
-                formattedSituation = formattedSituation.replace(' ben ', ' ben ');
-            }
-        }
-        
-        document.getElementById('situationAffirmation').textContent = formattedSituation;
+        // Functie om situatie natuurlijker te maken
+        function formatSituation(situation) {
+            // Begin met alles in kleine letters
+            let formattedSituation = situation.toLowerCase();
 
-        // Spraak setup
+            // Verwijder 'omdat' als het er staat
+            if (formattedSituation.startsWith('omdat')) {
+                formattedSituation = formattedSituation.substring(7).trim();
+            }
+
+            // Verwijder eventuele punten aan het einde
+            formattedSituation = formattedSituation.replace(/\.$/, '');
+
+            // Corrigeer 'gestreste' naar 'gestresde'
+            formattedSituation = formattedSituation.replace(/gestreste/g, 'gestresde');
+
+            // Als de situatie 'werkdag' bevat, voeg 'ik een' toe en 'heb' erachter
+            if (formattedSituation.includes('werkdag')) {
+                formattedSituation = 'ik een ' + formattedSituation + ' heb';
+            }
+
+            // Zet de eerste letter van de situatie in hoofdletter
+            formattedSituation = formattedSituation.charAt(0).toUpperCase() + formattedSituation.slice(1);
+
+            // Voeg 'omdat' toe als het niet al in de zin staat
+            if (!situation.toLowerCase().includes('omdat')) {
+                formattedSituation = 'omdat ' + formattedSituation;
+            }
+
+            return formattedSituation;
+        }
+
+        // Maak de complete affirmatie
+        const formattedSituation = formatSituation(situation);
+        const affirmationText = formattedSituation;
+        
+        // Update de tekst in de HTML
+        document.getElementById('situationAffirmation').textContent = affirmationText;
+
         function setupVoice() {
             speech = new SpeechSynthesisUtterance();
             speech.lang = 'nl-NL';
@@ -284,63 +304,77 @@
             speech.volume = 0.9;
 
             const voices = window.speechSynthesis.getVoices();
-            if (voices.length > 0) {
-                console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
-                const dutchVoice = voices.find(v => v.lang === 'nl-NL');
-                speech.voice = dutchVoice || voices[0];
-            }
+            console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
+            const dutchVoice = voices.find(v => v.lang === 'nl-NL');
+            speech.voice = dutchVoice || voices[0];
         }
 
-        function startEFTOnderOog() {
+        // Start automatisch zodra de pagina is geladen
+        window.addEventListener('load', () => {
             isPlaying = true;
+            repeatCount = 0;
+            pageStartTime = Date.now();
             speakAffirmation();
-        }
+        });
 
-        if (window.speechSynthesis) {
-            setupVoice();
-            window.speechSynthesis.onvoiceschanged = () => {
-                setupVoice();
-                startEFTOnderOog();
-            };
-        } else {
-            startEFTOnderOog();
-        }
-
-        // Tekst uitspreken
+        // Spreek de affirmatie uit
         function speakAffirmation() {
-            if (window.speechSynthesis && speech) {
-                window.speechSynthesis.cancel();
-                const affirmationText = document.getElementById('affirmation').textContent;
-                speech.text = affirmationText;
-                speech.onend = function() {
-                    // Wacht minimaal 5 seconden voordat we doorgaan
-                    const startTime = Date.now();
-                    const minWaitTime = 5000; // 5 seconden in milliseconden
-                    
+            if (!window.speechSynthesis) return;
+            
+            const utterance = new SpeechSynthesisUtterance(affirmationText);
+            utterance.lang = 'nl-NL';
+            utterance.rate = 0.85;
+            utterance.pitch = 1.2;
+            utterance.volume = 0.9;
+
+            const voices = window.speechSynthesis.getVoices();
+            const dutchVoice = voices.find(v => v.lang === 'nl-NL');
+            utterance.voice = dutchVoice || voices[0];
+
+            utterance.onend = function() {
+                repeatCount++;
+                if (repeatCount < maxRepeats) {
                     setTimeout(() => {
-                        const elapsedTime = Date.now() - startTime;
-                        const remainingTime = Math.max(0, minWaitTime - elapsedTime);
-                        
-                        setTimeout(() => {
-                            window.location.href = 'kloppunt-onder-neus.html';
-                        }, remainingTime);
+                        if (isPlaying) {
+                            window.speechSynthesis.speak(utterance);
+                        }
                     }, 1000);
-                };
-                window.speechSynthesis.speak(speech);
-            }
+                } else {
+                    // Wacht tot 5 seconden na openen van de pagina zijn verstreken
+                    const minWaitTime = 5000;
+                    const elapsedTime = Date.now() - pageStartTime;
+                    const remainingTime = Math.max(0, minWaitTime - elapsedTime);
+                    setTimeout(() => {
+                        window.location.href = 'kloppunt-onder-neus.html';
+                    }, remainingTime);
+                }
+            };
+
+            window.speechSynthesis.speak(utterance);
         }
 
         // Pauzeer sessie
-        document.getElementById('pauseButton').addEventListener('click', () => {
-            isPaused = !isPaused;
-            if (isPaused) {
+        const pausePlayButton = document.getElementById('pausePlayButton');
+        pausePlayButton.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (!isPlaying) {
                 window.speechSynthesis.pause();
-                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-play"></i>';
+                pausePlayButton.innerHTML = '<i class="fas fa-play"></i>';
             } else {
                 window.speechSynthesis.resume();
-                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-pause"></i>';
+                pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
             }
         });
+
+        // Zorg ervoor dat de spraak niet stopt als de browser het tabblad verlaat
+        window.addEventListener('beforeunload', () => {
+            window.speechSynthesis.cancel();
+        });
+
+        if (window.speechSynthesis) {
+            setupVoice();
+            window.speechSynthesis.onvoiceschanged = setupVoice;
+        }
     </script>
 </body>
 </html> 

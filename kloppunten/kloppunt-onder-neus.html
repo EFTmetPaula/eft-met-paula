@@ -218,10 +218,59 @@
         let isSessionActive = false;
         let isPaused = false;
         let speech = null;
+        let repeatCount = 0;
+        const maxRepeats = 3;
         let isPlaying = true;
+        let pageStartTime = Date.now();
+
         // Laad opgeslagen gegevens
         const emotion = localStorage.getItem('eftEmotion') || 'deze emotie';
-        document.getElementById('emotionAffirmation').textContent = emotion;
+
+        // Functie om emotie om te zetten naar een natuurlijke vorm
+        function formatEmotion(emotion) {
+            const emotionMap = {
+                'frustratie': 'gefrustreerd',
+                'angst': 'bang',
+                'boos': 'boos',
+                'boosheid': 'boos',
+                'verdriet': 'verdrietig',
+                'spanning': 'gespannen',
+                'spanningen': 'gespannen',
+                'stress': 'gestrest',
+                'onzekerheid': 'onzeker',
+                'teleurstelling': 'teleurgesteld',
+                'zorgen': 'bezorgd',
+                'irritatie': 'geïrriteerd'
+            };
+
+            // Als de emotie in de map staat, gebruik die versie
+            if (emotionMap[emotion.toLowerCase()]) {
+                return emotionMap[emotion.toLowerCase()];
+            }
+
+            // Anders, probeer een natuurlijke vorm te maken
+            if (emotion.toLowerCase().endsWith('ie')) {
+                return 'ge' + emotion.toLowerCase().slice(0, -2) + 'd';
+            }
+            if (emotion.toLowerCase().endsWith('ing')) {
+                return 'ge' + emotion.toLowerCase().slice(0, -3) + 'd';
+            }
+            if (emotion.toLowerCase().endsWith('heid')) {
+                return emotion.toLowerCase().slice(0, -4);
+            }
+            
+            // Als laatste optie, gebruik de emotie direct
+            return emotion.toLowerCase();
+        }
+
+        // Maak de complete affirmatie
+        const formattedEmotion = formatEmotion(emotion);
+        const affirmationText = `Ik voel me ${formattedEmotion}`;
+        
+        // Update de tekst in de HTML
+        document.getElementById('emotionAffirmation').textContent = formattedEmotion;
+        document.getElementById('affirmation').textContent = affirmationText;
+
         // Spraak setup
         function setupVoice() {
             speech = new SpeechSynthesisUtterance();
@@ -252,7 +301,6 @@
         function speakAffirmation() {
             if (window.speechSynthesis && speech) {
                 window.speechSynthesis.cancel();
-                const affirmationText = document.getElementById('affirmation').textContent;
                 speech.text = affirmationText;
                 speech.onend = function() {
                     // Wacht minimaal 5 seconden voordat we doorgaan

@@ -1,0 +1,24 @@
+# Systeembestanden
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor mappen en bestanden
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Tijdelijke bestanden
+*.log
+*.tmp
+*.temp
+
+# Afhankelijkheden
+node_modules/
+vendor/
+
+# Build output
+dist/
+build/ 

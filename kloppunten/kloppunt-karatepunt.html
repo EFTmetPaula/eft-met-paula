@@ -235,8 +235,83 @@
         // Laad opgeslagen gegevens
         const emotion = localStorage.getItem('eftEmotion') || 'deze emotie';
         const situation = localStorage.getItem('eftSituation') || 'deze situatie';
-        document.getElementById('emotionAffirmation').textContent = emotion;
-        document.getElementById('situationAffirmation').textContent = situation;
+
+        // Functie om emotie om te zetten naar een natuurlijke vorm
+        function formatEmotion(emotion) {
+            const emotionMap = {
+                'frustratie': 'gefrustreerd',
+                'angst': 'bang',
+                'boos': 'boos',
+                'boosheid': 'boos',
+                'verdriet': 'verdrietig',
+                'spanning': 'gespannen',
+                'spanningen': 'gespannen',
+                'stress': 'gestrest',
+                'onzekerheid': 'onzeker',
+                'teleurstelling': 'teleurgesteld',
+                'zorgen': 'bezorgd',
+                'irritatie': 'geïrriteerd'
+            };
+
+            // Als de emotie in de map staat, gebruik die versie
+            if (emotionMap[emotion.toLowerCase()]) {
+                return emotionMap[emotion.toLowerCase()];
+            }
+
+            // Anders, probeer een natuurlijke vorm te maken
+            if (emotion.toLowerCase().endsWith('ie')) {
+                return 'ge' + emotion.toLowerCase().slice(0, -2) + 'd';
+            }
+            if (emotion.toLowerCase().endsWith('ing')) {
+                return 'ge' + emotion.toLowerCase().slice(0, -3) + 'd';
+            }
+            if (emotion.toLowerCase().endsWith('heid')) {
+                return emotion.toLowerCase().slice(0, -4);
+            }
+            
+            // Als laatste optie, gebruik de emotie direct
+            return emotion.toLowerCase();
+        }
+
+        // Functie om situatie natuurlijker te maken
+        function formatSituation(situation) {
+            // Begin met alles in kleine letters
+            let formattedSituation = situation.toLowerCase();
+
+            // Verwijder 'omdat' als het er staat
+            if (formattedSituation.startsWith('omdat')) {
+                formattedSituation = formattedSituation.substring(7).trim();
+            }
+
+            // Verwijder eventuele punten aan het einde
+            formattedSituation = formattedSituation.replace(/\.$/, '');
+
+            // Corrigeer specifieke woorden
+            formattedSituation = formattedSituation.replace(/gestreste/g, 'gestresde');
+
+            // Voeg 'ik heb' toe als het een werkdag of vergelijkbare situatie is
+            if (formattedSituation.includes('werkdag')) {
+                formattedSituation = 'ik een ' + formattedSituation + ' heb';
+            }
+
+            // Zet de eerste letter van de situatie in hoofdletter
+            formattedSituation = formattedSituation.charAt(0).toUpperCase() + formattedSituation.slice(1);
+
+            // Voeg 'omdat' toe als het niet al in de zin staat
+            if (!situation.toLowerCase().includes('omdat')) {
+                formattedSituation = 'omdat ' + formattedSituation;
+            }
+
+            return formattedSituation;
+        }
+
+        // Maak de complete affirmatie
+        const formattedEmotion = formatEmotion(emotion);
+        const formattedSituation = formatSituation(situation);
+        const affirmationText = `Ook al ben ik ${formattedEmotion} ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
+        
+        // Update de tekst in de HTML
+        document.getElementById('affirmation').textContent = affirmationText;
 
         let isPlaying = false;
         let repeatCount = 0;
@@ -255,12 +330,29 @@
         function speakAffirmation() {
             if (!window.speechSynthesis) return;
             
-            const affirmationText = document.getElementById('affirmation').textContent;
             const utterance = new SpeechSynthesisUtterance(affirmationText);
             utterance.lang = 'nl-NL';
-            utterance.rate = 0.85;
-            utterance.pitch = 1.2;
-            utterance.volume = 0.9;
+            utterance.rate = 0.8; // Iets langzamer voor betere uitspraak
+            utterance.pitch = 1.0; // Normale toonhoogte
+            utterance.volume = 1.0; // Maximale volume
+
+            // Wacht tot de stemmen geladen zijn
+            window.speechSynthesis.onvoiceschanged = () => {
+                const voices = window.speechSynthesis.getVoices();
+                // Zoek specifiek naar een Nederlandse stem
+                const dutchVoice = voices.find(voice => 
+                    voice.lang === 'nl-NL' && 
+                    (voice.name.includes('Google') || voice.name.includes('Microsoft'))
+                );
+                if (dutchVoice) {
+                    utterance.voice = dutchVoice;
+                }
+            };
+
+            // Zorg ervoor dat de stemmen geladen zijn
+            if (window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.getVoices();
+            }
 
             utterance.onend = function() {
                 repeatCount++;
@@ -301,6 +393,19 @@
         window.addEventListener('beforeunload', () => {
             window.speechSynthesis.cancel();
         });
+
+        function setupVoice() {
+            speech = new SpeechSynthesisUtterance();
+            speech.lang = 'nl-NL';
+            speech.rate = 0.85;
+            speech.pitch = 1.2;
+            speech.volume = 0.9;
+
+            const voices = window.speechSynthesis.getVoices();
+            console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
+            const dutchVoice = voices.find(v => v.lang === 'nl-NL');
+            speech.voice = dutchVoice || voices[0];
+        }
     </script>
 </body>
 </html>

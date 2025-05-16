@@ -275,31 +275,52 @@
         let isSessionActive = false;
         let isPaused = false;
         let speech = null;
+        let repeatCount = 0;
+        const maxRepeats = 3;
+        let isPlaying = true;
+        let pageStartTime = Date.now();
 
         // Laad opgeslagen gegevens
         const situation = localStorage.getItem('eftSituation') || 'deze situatie';
         
-        // Maak een mooie zin van de situatie
-        let formattedSituation = situation;
-        if (situation.toLowerCase().startsWith('omdat')) {
-            formattedSituation = situation.substring(7).trim(); // Verwijder 'omdat'
-        }
-        
-        // Zorg dat de zin begint met 'ik' en het werkwoord direct erna komt
-        if (!formattedSituation.toLowerCase().startsWith('ik')) {
-            // Als er geen 'ik' in staat, voeg het toe
-            formattedSituation = "ik " + formattedSituation.toLowerCase();
-        } else {
-            // Als er wel 'ik' in staat, zorg dat het werkwoord direct erna komt
-            formattedSituation = formattedSituation.toLowerCase();
-            if (formattedSituation.includes(' ben ')) {
-                formattedSituation = formattedSituation.replace(' ben ', ' ben ');
-            } else if (formattedSituation.includes(' ben ')) {
-                formattedSituation = formattedSituation.replace(' ben ', ' ben ');
+        // Functie om situatie natuurlijker te maken
+        function formatSituation(situation) {
+            // Begin met alles in kleine letters
+            let formattedSituation = situation.toLowerCase();
+
+            // Verwijder 'omdat' als het er staat
+            if (formattedSituation.startsWith('omdat')) {
+                formattedSituation = formattedSituation.substring(7).trim();
             }
+
+            // Verwijder eventuele punten aan het einde
+            formattedSituation = formattedSituation.replace(/\.$/, '');
+
+            // Corrigeer 'gestreste' naar 'gestresde'
+            formattedSituation = formattedSituation.replace(/gestreste/g, 'gestresde');
+
+            // Als de situatie 'werkdag' bevat, voeg 'ik een' toe en 'heb' erachter
+            if (formattedSituation.includes('werkdag')) {
+                formattedSituation = 'ik een ' + formattedSituation + ' heb';
+            }
+
+            // Zet de eerste letter van de situatie in hoofdletter
+            formattedSituation = formattedSituation.charAt(0).toUpperCase() + formattedSituation.slice(1);
+
+            // Voeg 'omdat' toe als het niet al in de zin staat
+            if (!situation.toLowerCase().includes('omdat')) {
+                formattedSituation = 'omdat ' + formattedSituation;
+            }
+
+            return formattedSituation;
         }
+
+        // Maak de complete affirmatie
+        const formattedSituation = formatSituation(situation);
+        const affirmationText = formattedSituation;
         
-        document.getElementById('situationAffirmation').textContent = formattedSituation;
+        // Update de tekst in de HTML
+        document.getElementById('situationAffirmation').textContent = affirmationText;
 
         // Spraak setup
         function setupVoice() {
