@@ -317,6 +317,25 @@
 
         // Functie om emotie om te zetten naar een natuurlijke vorm
         function formatEmotion(emotion) {
+            // Emoties die we als werkwoord willen gebruiken
+            const verbEmotions = {
+                'balen': 'baal',
+                'piekeren': 'pieker',
+                'zorgen': 'zorg',
+                'twijfelen': 'twijfel',
+                'huilen': 'huil',
+                'lachen': 'lach',
+                'denken': 'denk'
+            };
+
+            // Als het een werkwoord-emotie is, gebruik de werkwoordsvorm
+            if (verbEmotions[emotion.toLowerCase()]) {
+                return {
+                    emotion: verbEmotions[emotion.toLowerCase()],
+                    useVerb: true
+                };
+            }
+
             const emotionMap = {
                 'frustratie': 'gefrustreerd',
                 'angst': 'bang',
@@ -334,30 +353,39 @@
 
             // Als de emotie in de map staat, gebruik die versie
             if (emotionMap[emotion.toLowerCase()]) {
-                return emotionMap[emotion.toLowerCase()];
+                return {
+                    emotion: emotionMap[emotion.toLowerCase()],
+                    useVerb: false
+                };
             }
 
             // Anders, probeer een natuurlijke vorm te maken
+            let formattedEmotion = emotion.toLowerCase();
             if (emotion.toLowerCase().endsWith('ie')) {
-                return 'ge' + emotion.toLowerCase().slice(0, -2) + 'd';
-            }
-            if (emotion.toLowerCase().endsWith('ing')) {
-                return 'ge' + emotion.toLowerCase().slice(0, -3) + 'd';
-            }
-            if (emotion.toLowerCase().endsWith('heid')) {
-                return emotion.toLowerCase().slice(0, -4);
+                formattedEmotion = 'ge' + emotion.toLowerCase().slice(0, -2) + 'd';
+            } else if (emotion.toLowerCase().endsWith('ing')) {
+                formattedEmotion = 'ge' + emotion.toLowerCase().slice(0, -3) + 'd';
+            } else if (emotion.toLowerCase().endsWith('heid')) {
+                formattedEmotion = emotion.toLowerCase().slice(0, -4);
             }
             
-            // Als laatste optie, gebruik de emotie direct
-            return emotion.toLowerCase();
+            return {
+                emotion: formattedEmotion,
+                useVerb: false
+            };
         }
 
         // Maak de complete affirmatie
         const formattedEmotion = formatEmotion(emotion);
-        const affirmationText = `Ik voel me ${formattedEmotion}`;
+        let affirmationText;
+        if (formattedEmotion.useVerb) {
+            affirmationText = `Ik ${formattedEmotion.emotion}`;
+        } else {
+            affirmationText = `Ik voel me ${formattedEmotion.emotion}`;
+        }
         
         // Update de tekst in de HTML
-        document.getElementById('emotionAffirmation').textContent = formattedEmotion;
+        document.getElementById('emotionAffirmation').textContent = formattedEmotion.emotion;
         document.getElementById('affirmation').textContent = affirmationText;
 
         function setupVoice() {

@@ -238,12 +238,39 @@
 
         // Functie om emotie om te zetten naar een natuurlijke vorm
         function formatEmotion(emotion) {
+            // Emoties die we als werkwoord willen gebruiken
+            const verbEmotions = {
+                'balen': 'baal',
+                'piekeren': 'pieker',
+                'zorgen': 'zorg',
+                'twijfelen': 'twijfel',
+                'huilen': 'huil',
+                'lachen': 'lach',
+                'denken': 'denk'
+            };
+
+            // Als het een werkwoord-emotie is, gebruik de werkwoordsvorm
+            if (verbEmotions[emotion.toLowerCase()]) {
+                return {
+                    emotion: verbEmotions[emotion.toLowerCase()],
+                    useVerb: true
+                };
+            }
+
+            // Specifieke gevallen die we willen behouden zoals ze zijn
+            const keepAsIs = ['moe', 'bang', 'boos', 'verdrietig', 'blij', 'gelukkig'];
+            
+            if (keepAsIs.includes(emotion.toLowerCase())) {
+                return {
+                    emotion: emotion.toLowerCase(),
+                    useVerb: false
+                };
+            }
+
             const emotionMap = {
                 'frustratie': 'gefrustreerd',
                 'angst': 'bang',
-                'boos': 'boos',
                 'boosheid': 'boos',
-                'verdriet': 'verdrietig',
                 'spanning': 'gespannen',
                 'spanningen': 'gespannen',
                 'stress': 'gestrest',
@@ -255,22 +282,28 @@
 
             // Als de emotie in de map staat, gebruik die versie
             if (emotionMap[emotion.toLowerCase()]) {
-                return emotionMap[emotion.toLowerCase()];
+                return {
+                    emotion: emotionMap[emotion.toLowerCase()],
+                    useVerb: false
+                };
             }
 
             // Anders, probeer een natuurlijke vorm te maken
+            let formattedEmotion = emotion.toLowerCase();
             if (emotion.toLowerCase().endsWith('ie')) {
-                return 'ge' + emotion.toLowerCase().slice(0, -2) + 'd';
-            }
-            if (emotion.toLowerCase().endsWith('ing')) {
-                return 'ge' + emotion.toLowerCase().slice(0, -3) + 'd';
-            }
-            if (emotion.toLowerCase().endsWith('heid')) {
-                return emotion.toLowerCase().slice(0, -4);
+                formattedEmotion = 'ge' + emotion.toLowerCase().slice(0, -2) + 'd';
+            } else if (emotion.toLowerCase().endsWith('ing')) {
+                formattedEmotion = 'ge' + emotion.toLowerCase().slice(0, -3) + 'd';
+            } else if (emotion.toLowerCase().endsWith('heid')) {
+                formattedEmotion = emotion.toLowerCase().slice(0, -4);
+            } else if (emotion.toLowerCase().endsWith('ig')) {
+                formattedEmotion = emotion.toLowerCase();
             }
             
-            // Als laatste optie, gebruik de emotie direct
-            return emotion.toLowerCase();
+            return {
+                emotion: formattedEmotion,
+                useVerb: false
+            };
         }
 
         // Functie om situatie natuurlijker te maken
@@ -286,16 +319,25 @@
             // Verwijder eventuele punten aan het einde
             formattedSituation = formattedSituation.replace(/\.$/, '');
 
-            // Corrigeer specifieke woorden
+            // Corrigeer specifieke woorden en zinsdelen
             formattedSituation = formattedSituation.replace(/gestreste/g, 'gestresde');
+            
+            // Verbeter zinsopbouw voor specifieke gevallen
+            if (formattedSituation.includes('iets mis is gegaan')) {
+                formattedSituation = formattedSituation.replace(/iets mis is gegaan/g, 'er iets mis is gegaan');
+            }
+            if (formattedSituation.includes('iets mis gaat')) {
+                formattedSituation = formattedSituation.replace(/iets mis gaat/g, 'er iets mis gaat');
+            }
+            if (formattedSituation.includes('weer')) {
+                // Zorg dat 'weer' op de juiste plek staat
+                formattedSituation = formattedSituation.replace(/weer er/g, 'er weer');
+            }
 
             // Voeg 'ik heb' toe als het een werkdag of vergelijkbare situatie is
             if (formattedSituation.includes('werkdag')) {
                 formattedSituation = 'ik een ' + formattedSituation + ' heb';
             }
-
-            // Zet de eerste letter van de situatie in hoofdletter
-            formattedSituation = formattedSituation.charAt(0).toUpperCase() + formattedSituation.slice(1);
 
             // Voeg 'omdat' toe als het niet al in de zin staat
             if (!situation.toLowerCase().includes('omdat')) {
@@ -308,7 +350,13 @@
         // Maak de complete affirmatie
         const formattedEmotion = formatEmotion(emotion);
         const formattedSituation = formatSituation(situation);
-        const affirmationText = `Ook al ben ik ${formattedEmotion} ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
+        
+        let affirmationText;
+        if (formattedEmotion.useVerb) {
+            affirmationText = `Ook al ${formattedEmotion.emotion} ik ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
+        } else {
+            affirmationText = `Ook al voel ik me ${formattedEmotion.emotion} ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
+        }
         
         // Update de tekst in de HTML
         document.getElementById('affirmation').textContent = affirmationText;
