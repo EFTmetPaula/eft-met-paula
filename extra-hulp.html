@@ -248,15 +248,20 @@
             }
 
             .action-button {
-                padding: 18px 30px; /* Grotere touch targets */
-                width: 100%; /* Volledige breedte op mobiel */
+                padding: 12px 20px; /* Kleinere padding op mobiel */
+                width: auto; /* Verwijder full width */
+                min-width: 120px; /* Minimum breedte voor touch target */
+                max-width: 200px; /* Maximum breedte op mobiel */
                 text-align: center;
                 margin: 5px 0;
+                font-size: 0.95em; /* Iets kleinere tekst */
             }
 
             .button-container {
-                flex-direction: column;
+                flex-direction: row; /* Buttons naast elkaar */
+                flex-wrap: wrap; /* Wrap als er te weinig ruimte is */
                 gap: 10px;
+                justify-content: center; /* Centreer de buttons */
             }
 
             .help-section {
@@ -270,6 +275,19 @@
 
             h2 {
                 font-size: 1.3em;
+            }
+        }
+
+        /* Extra kleine schermen */
+        @media (max-width: 480px) {
+            .action-button {
+                padding: 10px 15px; /* Nog kleinere padding */
+                min-width: 100px; /* Nog smaller op zeer kleine schermen */
+                font-size: 0.9em; /* Nog iets kleinere tekst */
+            }
+
+            .button-container {
+                gap: 8px; /* Kleinere ruimte tussen buttons */
             }
         }
 
