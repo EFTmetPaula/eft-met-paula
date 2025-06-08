@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Extra hulp en professionele begeleiding bij EFT (Emotional Freedom Techniques) met Paula Sangers, gecertificeerd EFT Practitioner en coach.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Extra Hulp - EFT met Paula">
+    <meta property="og:description" content="Professionele begeleiding bij EFT met Paula Sangers, gecertificeerd EFT Practitioner en coach.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.paulasangers.nl/app">
+    <link rel="icon" type="image/png" href="logo/favicon.png">
     <title>Extra Hulp - EFT met Paula</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -176,6 +183,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            aria-label: "Hoofdnavigatie";
         }
 
         .nav-button {
@@ -272,12 +280,29 @@
         }
 
         .help-section[role="region"] {
-            aria-label: "Informatie sectie";
+            /* Verwijder ongeldige aria-label CSS */
         }
 
         *:focus-visible {
             outline: 3px solid rgba(255, 255, 255, 0.5);
             outline-offset: 2px;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .progress-bar.active {
+            transform: scaleX(1);
         }
     </style>
 </head>
@@ -363,7 +388,7 @@
                         <i class="fas fa-globe"></i>
                         Website
                     </a>
-                    <a href="https://www.instagram.com/coachbijspanningenstress" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                    <a href="https://www.instagram.com/coachbijspanningenstress.eft" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
                         <i class="fab fa-instagram"></i>
                         Instagram
                     </a>
@@ -371,7 +396,7 @@
             </div>
         </div>
     </div>
-    <div class="navigation-bar">
+    <div class="navigation-bar" role="navigation" aria-label="Hoofdnavigatie">
         <a href="index.html" class="nav-button" title="Home">
             <img src="avatar/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
         </a>
@@ -389,23 +414,26 @@
         </a>
     </div>
     <script>
-        // Voortgangsindicator
+        // Voortgangsindicator met error handling
         const progressBar = document.getElementById('progressBar');
-        let progress = 0;
-        
-        function updateProgress() {
-            progress += 0.1;
-            if (progress <= 1) {
-                progressBar.style.transform = `scaleX(${progress})`;
-                requestAnimationFrame(updateProgress);
+        if (progressBar) {
+            let progress = 0;
+            
+            function updateProgress() {
+                if (progress <= 1) {
+                    progress += 0.1;
+                    progressBar.style.transform = `scaleX(${progress})`;
+                    requestAnimationFrame(updateProgress);
+                }
             }
+            
+            window.addEventListener('load', () => {
+                if (progressBar) {
+                    progressBar.classList.add('active');
+                    updateProgress();
+                }
+            });
         }
-        
-        // Start de voortgangsindicator wanneer de pagina laadt
-        window.addEventListener('load', () => {
-            progressBar.classList.add('active');
-            updateProgress();
-        });
     </script>
 </body>
 </html> 
