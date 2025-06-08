@@ -13,6 +13,8 @@
             --text-color: #1a2c28;     /* Donkerder tekst voor beter contrast */
             --accent-color: #3d5a55;
             --hover-color: #2c423e;    /* Nog donkerder voor hover states */
+            --support-section-bg: rgba(255, 255, 255, 0.05);
+            --main-section-bg: rgba(255, 255, 255, 0.1);
         }
 
         body {
@@ -25,6 +27,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
@@ -56,10 +60,23 @@
         }
 
         .help-section {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--main-section-bg);
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .help-section.support-section {
+            background: var(--support-section-bg);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .help-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .help-section h2 {
@@ -105,7 +122,7 @@
             padding: 15px 30px;
             background-color: white;
             color: var(--primary-color);
-            border: none;
+            border: 2px solid var(--primary-color);
             border-radius: 8px;
             font-size: 1.1em;
             cursor: pointer;
@@ -114,6 +131,15 @@
             display: inline-block;
             position: relative;
             overflow: hidden;
+        }
+
+        .action-button:focus {
+            outline: 3px solid rgba(255, 255, 255, 0.5);
+            outline-offset: 2px;
+        }
+
+        .action-button:focus:not(:focus-visible) {
+            outline: none;
         }
 
         .action-button:hover {
@@ -208,18 +234,50 @@
         }
 
         @media (max-width: 768px) {
-            .menu-grid, .menu-grid-bottom {
-                grid-template-columns: 1fr;
-            }
-            
-            .menu-item {
-                padding: 25px;
+            .container {
+                padding: 15px;
+                margin: 20px auto;
             }
 
-            .nav-button {
-                width: 50px;
-                height: 50px;
+            .action-button {
+                padding: 18px 30px; /* Grotere touch targets */
+                width: 100%; /* Volledige breedte op mobiel */
+                text-align: center;
+                margin: 5px 0;
             }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .help-section {
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .help-section[role="region"] {
+            aria-label: "Informatie sectie";
+        }
+
+        *:focus-visible {
+            outline: 3px solid rgba(255, 255, 255, 0.5);
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -229,7 +287,7 @@
         <div class="card">
             <h1>Extra Hulp</h1>
 
-            <div class="help-section">
+            <div class="help-section support-section" role="region" aria-label="Tips voor het beste resultaat">
                 <h2>Tips voor het beste resultaat</h2>
                 <ul class="tip-list">
                     <li>Herhaal de oefening meerdere keren. Het is normaal dat de spanning niet direct helemaal weg is.</li>
@@ -238,7 +296,7 @@
                 </ul>
             </div>
 
-            <div class="help-section">
+            <div class="help-section support-section" role="region" aria-label="Wat als het niet werkt">
                 <h2>Wat als het niet werkt?</h2>
                 <ul class="tip-list">
                     <li>Probeer de woorden aan te passen aan wat je precies voelt.</li>
@@ -246,20 +304,70 @@
                 </ul>
             </div>
 
-            <div class="help-section">
-                <h2>Wanneer zoek je professionele hulp?</h2>
-                <p>Merk je dat spanningen niet voelde weggaan door het zelf aan te pakken? Of heb je extra ondersteuning nodig, omdat je problemen te groot zijn om zelfstandig aan te pakken? Neem dan contact op met een gecertificeerde EFT behandelaar.</p>
-                <p>Ik ben zelf gecertificeerd EFT Practitioner volgens de richtlijnen van de EFT International. Kijk voor meer informatie op <a href="https://www.paulasangers.nl" style="color: white; text-decoration: underline;">www.paulasangers.nl</a></p>
+            <div class="help-section" role="region" aria-label="Professionele hulp informatie">
+                <h2>Meer hulp nodig? Je staat er niet alleen voor.</h2>
+                <p>EFT is een krachtige zelfhulpmethode, maar soms is extra begeleiding helpend. Bijvoorbeeld:</p>
+                <ul class="tip-list">
+                    <li>Als spanning blijft of steeds terugkomt</li>
+                    <li>Bij angst, somberheid of overweldigende emoties</li>
+                    <li>Als je dagelijks leven eronder lijdt</li>
+                    <li>Of als je voelt: ik wil hier niet alleen mee blijven worstelen</li>
+                </ul>
+            </div>
+
+            <div class="help-section" role="region" aria-label="Wie ben ik sectie">
+                <h2>Wie ben ik?</h2>
+                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 0 0 200px;">
+                        <a href="https://www.paulasangers.nl" style="text-decoration: none;">
+                            <img src="logo/logo-website.png" alt="Paula Sangers - EFT Coach" style="max-width: 100%; height: auto;">
+                        </a>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <p>Ik ben Paula Sangers, gecertificeerd EFT Practitioner en coach. Al meer dan 12 jaar werk ik in de zorg, waar ik mensen begeleid met uitdagingen waar ze in het dagelijks leven mee te maken krijgen. In mijn praktijk help ik je om spanning, stress en vastzittende emoties los te laten. Dat doe ik met aandacht, rust en zonder oordeel, zodat jij weer grip krijgt op wat er speelt.</p>
+                    </div>
+                </div>
             </div>
 
             <div class="help-section">
-                <h2>Volg me op Instagram</h2>
-                <p>Blijf op de hoogte van de laatste EFT tips en updates door me te volgen op Instagram.</p>
-                <a href="https://www.instagram.com/coachbijspanningenstress" class="action-button tooltip" style="display: inline-flex; align-items: center; gap: 10px;">
-                    <i class="fab fa-instagram"></i>
-                    @coachbijspanningenstress
-                    <span class="tooltip-text">Volg me voor dagelijkse EFT tips en updates</span>
-                </a>
+                <h2>Wat ik voor je kan betekenen:</h2>
+                <ul class="tip-list">
+                    <li><strong>Persoonlijk coachingtraject</strong> – met de 1-op-1 sessies gaan we samen gericht werken aan de problemen waar jij tegenaan loopt. Dit doen we door middel van verdiepende EFT-oefeningen, afgestemd op jouw situatie.</li>
+                    <li><strong>EFT-workshop</strong> – een laagdrempelige en praktische manier om de basis van EFT onder de knie te krijgen, zodat je het zelf kunt toepassen bij stress, spanning of emoties.</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h2>Laten we samen aan de slag gaan</h2>
+                <p>Wil je meer weten over mijn aanpak of heb je een vraag? Ik denk graag met je mee over wat voor jou de beste volgende stap is. Neem gerust contact op voor een vrijblijvend gesprek.</p>
+                
+                <div class="button-container" style="flex-wrap: wrap; gap: 15px;">
+                    <a href="https://wa.me/316224009995?text=Hoi%20Paula%2C%20ik%20heb%20een%20vraag%20over%20EFT%20coaching" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </a>
+                    <a href="tel:06224009995" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-phone"></i>
+                        Bellen
+                    </a>
+                    <a href="mailto:info@paulasangers.nl?subject=Vraag%20over%20EFT%20coaching" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-envelope"></i>
+                        E-mail
+                    </a>
+                </div>
+
+                <p style="margin-top: 30px; text-align: center;">Meer informatie over mijn werkwijze, handige tips en leuke weetjes:</p>
+                
+                <div class="button-container" style="flex-wrap: wrap; gap: 15px;">
+                    <a href="https://www.paulasangers.nl" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-globe"></i>
+                        Website
+                    </a>
+                    <a href="https://www.instagram.com/coachbijspanningenstress" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fab fa-instagram"></i>
+                        Instagram
+                    </a>
+                </div>
             </div>
         </div>
     </div>
