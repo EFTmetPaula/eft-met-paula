@@ -238,22 +238,67 @@
         function setupVoice() {
             speech = new SpeechSynthesisUtterance();
             speech.lang = 'nl-NL';
-            speech.rate = 0.85;
-            speech.pitch = 1.2;
-            speech.volume = 0.9;
+            
+            // Optimaliseerde instellingen voor beste kwaliteit
+            speech.rate = 0.8;        // Iets langzamer voor betere uitspraak
+            speech.pitch = 1.0;       // Normale toonhoogte
+            speech.volume = 1.0;      // Maximale volume
 
             const voices = window.speechSynthesis.getVoices();
-            // 1. Microsoft Hanna Online
-            let chosenVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
-            // 2. Xander of Claire (voor iOS)
-            if (!chosenVoice) chosenVoice = voices.find(v => (v.name.includes('Xander') || v.name.includes('Claire')) && v.lang === 'nl-NL');
-            // 3. nl-NL-Wavenet-A of Google Nederlands (voor Android/Chrome)
-            if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-A') && v.lang === 'nl-NL');
-            if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('Google') && v.lang === 'nl-NL');
-            // 4. Anders: eerste Nederlandse stem
-            if (!chosenVoice) chosenVoice = voices.find(v => v.lang === 'nl-NL');
-            // Fallback: eerste stem
-            speech.voice = chosenVoice || voices[0];
+            console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
+            
+            // Verbeterde stem-selectie met prioriteit voor beste kwaliteit
+            let chosenVoice = null;
+            
+            // 1. Microsoft Hanna Online (zeer goede kwaliteit)
+            chosenVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
+            
+            // 2. Google Wavenet stemmen (hoge kwaliteit)
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-A') && v.lang === 'nl-NL');
+            }
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-C') && v.lang === 'nl-NL');
+            }
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-E') && v.lang === 'nl-NL');
+            }
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.name.includes('nl-NL-Wavenet') && v.lang === 'nl-NL');
+            }
+            
+            // 3. Google stemmen (goede kwaliteit)
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.name.includes('Google') && v.lang === 'nl-NL');
+            }
+            
+            // 4. Microsoft stemmen (goede kwaliteit)
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.name.includes('Microsoft') && v.lang === 'nl-NL');
+            }
+            
+            // 5. Apple stemmen (voor iOS)
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => (v.name.includes('Xander') || v.name.includes('Claire') || v.name.includes('Samantha')) && v.lang === 'nl-NL');
+            }
+            
+            // 6. Eerste Nederlandse stem
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.lang === 'nl-NL');
+            }
+            
+            // 7. Fallback: eerste beschikbare stem
+            if (!chosenVoice && voices.length > 0) {
+                chosenVoice = voices[0];
+            }
+            
+            speech.voice = chosenVoice;
+            
+            if (chosenVoice) {
+                console.log('Gekozen stem:', chosenVoice.name, '(', chosenVoice.lang, ')');
+            } else {
+                console.warn('Geen stem gevonden');
+            }
         }
 
         if (window.speechSynthesis) {

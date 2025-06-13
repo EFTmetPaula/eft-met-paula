@@ -60,13 +60,17 @@
 
         .form-group {
             margin-bottom: 25px;
+            display: flex;
+            align-items: center;
         }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
+        .form-group label {
+            margin-bottom: 0;
+            margin-right: 0.5em;
             color: white;
             font-weight: 600;
+        }
+        .form-group input[type="text"] {
+            flex: 1;
         }
 
         input[type="text"],
@@ -121,6 +125,8 @@
         .suds-container {
             text-align: center;
             margin: 20px 0;
+            padding-left: 30px;
+            padding-right: 30px;
         }
 
         .suds-value {
@@ -205,17 +211,17 @@
 
             <form id="eftForm">
                 <div class="form-group">
-                    <label for="emotion">Welke emotie voel je op dit moment?</label>
+                    <label for="emotion">Ik voel me:</label>
                     <input type="text" id="emotion" name="emotion" placeholder="bijvoorbeeld: angstig, verdrietig, boos" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="situation">Wat maakt dat je deze emotie voelt?</label>
-                    <input type="text" id="situation" name="situation" placeholder="bijvoorbeeld: omdat ik me zorgen maak over..." required>
+                    <label for="situation">Omdat:</label>
+                    <input type="text" id="situation" name="situation" placeholder="bijvoorbeeld: ik me zorgen maak over..." required>
                 </div>
 
-                <div class="form-group">
-                    <label for="suds">Hoe intens voel je deze emotie? (0-10)</label>
+                <div class="form-group" style="display: block; text-align: center;">
+                    <label for="suds" style="display: block; margin-bottom: 10px;">Hoe intens voel je de emotie op dit moment?</label>
                     <div class="suds-container">
                         <input type="range" id="suds" name="suds" min="0" max="10" value="5">
                         <div class="suds-value">5</div>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbeterde TTS Implementatie</title>
+</head>
+<body>
+    <h1>Verbeterde TTS Implementatie</h1>
+    <button onclick="speakWithImprovedTTS()">Spreek uit met verbeterde TTS</button>
+    <div id="voiceInfo"></div>
+
+    <script>
+        let speech = null;
+        let isPlaying = false;
+
+        // Verbeterde stem setup functie
+        function setupImprovedVoice() {
+            speech = new SpeechSynthesisUtterance();
+            speech.lang = 'nl-NL';
+            
+            // Optimaliseerde instellingen voor betere kwaliteit
+            speech.rate = 0.8;        // Iets langzamer voor betere uitspraak
+            speech.pitch = 1.0;       // Normale toonhoogte
+            speech.volume = 1.0;      // Maximale volume
+            speech.voiceURI = '';     // Laat het systeem de beste stem kiezen
+
+            const voices = window.speechSynthesis.getVoices();
+            
+            // Uitgebreide stem-selectie met prioriteit voor beste kwaliteit
+            let chosenVoice = null;
+            
+            // 1. Microsoft Hanna Online (zeer goede kwaliteit)
+            chosenVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
+            
+            // 2. Google Wavenet stemmen (hoge kwaliteit)
+            if (!chosenVoice) {
+                const wavenetVoices = voices.filter(v => v.name.includes('nl-NL-Wavenet') && v.lang === 'nl-NL');
+                if (wavenetVoices.length > 0) {
+                    // Kies de eerste vrouwelijke Wavenet stem als die er is
+                    chosenVoice = wavenetVoices.find(v => v.name.includes('A') || v.name.includes('C') || v.name.includes('E')) || wavenetVoices[0];
+                }
+            }
+            
+            // 3. Google stemmen (goede kwaliteit)
+            if (!chosenVoice) {
+                const googleVoices = voices.filter(v => v.name.includes('Google') && v.lang === 'nl-NL');
+                if (googleVoices.length > 0) {
+                    chosenVoice = googleVoices[0];
+                }
+            }
+            
+            // 4. Microsoft stemmen (goede kwaliteit)
+            if (!chosenVoice) {
+                const microsoftVoices = voices.filter(v => v.name.includes('Microsoft') && v.lang === 'nl-NL');
+                if (microsoftVoices.length > 0) {
+                    chosenVoice = microsoftVoices[0];
+                }
+            }
+            
+            // 5. Apple stemmen (voor iOS)
+            if (!chosenVoice) {
+                const appleVoices = voices.filter(v => 
+                    (v.name.includes('Xander') || v.name.includes('Claire') || v.name.includes('Samantha')) && 
+                    v.lang === 'nl-NL'
+                );
+                if (appleVoices.length > 0) {
+                    chosenVoice = appleVoices[0];
+                }
+            }
+            
+            // 6. Mozilla stemmen
+            if (!chosenVoice) {
+                const mozillaVoices = voices.filter(v => v.name.includes('Mozilla') && v.lang === 'nl-NL');
+                if (mozillaVoices.length > 0) {
+                    chosenVoice = mozillaVoices[0];
+                }
+            }
+            
+            // 7. Anders: eerste Nederlandse stem
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.lang === 'nl-NL');
+            }
+            
+            // Fallback: eerste beschikbare stem
+            speech.voice = chosenVoice || voices[0];
+            
+            // Log welke stem wordt gebruikt voor debugging
+            if (chosenVoice) {
+                console.log('Gekozen stem:', chosenVoice.name, '(', chosenVoice.lang, ')');
+                document.getElementById('voiceInfo').innerHTML = 
+                    `<p>Gebruikte stem: <strong>${chosenVoice.name}</strong> (${chosenVoice.lang})</p>`;
+            }
+            
+            return chosenVoice;
+        }
+
+        // Functie om tekst te verbeteren voor betere uitspraak
+        function improveTextForTTS(text) {
+            let improvedText = text;
+            
+            // Voeg pauzes toe voor betere uitspraak
+            improvedText = improvedText.replace(/,/g, ', <break time="0.5s"/>');
+            improvedText = improvedText.replace(/\./g, '. <break time="1s"/>');
+            
+            // Verbeter uitspraak van specifieke woorden
+            improvedText = improvedText.replace(/gestresst/g, 'ge-stresst');
+            improvedText = improvedText.replace(/teleurgesteld/g, 'teleur-ge-steld');
+            improvedText = improvedText.replace(/onzeker/g, 'on-ze-ker');
+            
+            // Voeg klemtoon toe aan belangrijke woorden
+            improvedText = improvedText.replace(/accepteer/g, '<emphasis>accepteer</emphasis>');
+            improvedText = improvedText.replace(/precies/g, '<emphasis>precies</emphasis>');
+            
+            return improvedText;
+        }
+
+        // Verbeterde spreek functie
+        function speakWithImprovedTTS() {
+            if (!window.speechSynthesis) {
+                alert('Speech synthesis wordt niet ondersteund in deze browser');
+                return;
+            }
+
+            const emotion = localStorage.getItem('eftEmotion') || 'gestresst';
+            const situation = localStorage.getItem('eftSituation') || 'ik een drukke werkdag heb';
+            
+            // Maak de affirmatie
+            const affirmationText = `Ook al voel ik me ${emotion} omdat ${situation}, toch accepteer ik mezelf precies zoals ik ben.`;
+            
+            // Verbeter de tekst voor TTS
+            const improvedText = improveTextForTTS(affirmationText);
+            
+            // Zorg ervoor dat we de beste stem gebruiken
+            const chosenVoice = setupImprovedVoice();
+            
+            // Annuleer eventuele lopende spraak
+            window.speechSynthesis.cancel();
+            
+            // Maak een nieuwe utterance
+            const utterance = new SpeechSynthesisUtterance(improvedText);
+            utterance.lang = 'nl-NL';
+            utterance.rate = 0.8;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            utterance.voice = chosenVoice;
+            
+            // Event handlers
+            utterance.onstart = function() {
+                isPlaying = true;
+                console.log('Spraak gestart');
+            };
+            
+            utterance.onend = function() {
+                isPlaying = false;
+                console.log('Spraak beëindigd');
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('Spraak fout:', event.error);
+                isPlaying = false;
+            };
+            
+            // Start de spraak
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Functie om beschikbare stemmen te tonen
+        function showAvailableVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            const dutchVoices = voices.filter(v => v.lang === 'nl-NL');
+            
+            console.log('Alle beschikbare stemmen:');
+            voices.forEach(voice => {
+                console.log(`- ${voice.name} (${voice.lang})`);
+            });
+            
+            console.log('\nNederlandse stemmen:');
+            dutchVoices.forEach(voice => {
+                console.log(`- ${voice.name} (${voice.lang})`);
+            });
+        }
+
+        // Initialiseer TTS
+        if (window.speechSynthesis) {
+            // Wacht tot stemmen geladen zijn
+            window.speechSynthesis.onvoiceschanged = () => {
+                setupImprovedVoice();
+                showAvailableVoices();
+            };
+            
+            // Forceer het laden van stemmen
+            window.speechSynthesis.getVoices();
+        }
+    </script>
+</body>
+</html> 

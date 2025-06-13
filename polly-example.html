@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Polly TTS Voorbeeld</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1001.0.min.js"></script>
+</head>
+<body>
+    <h1>Amazon Polly Text-to-Speech Voorbeeld</h1>
+    <button onclick="speakWithPolly()">Spreek uit met Polly</button>
+    <audio id="audioPlayer" controls style="display:none;"></audio>
+
+    <script>
+        // Amazon Polly configuratie
+        AWS.config.update({
+            region: 'eu-west-1', // Kies de dichtstbijzijnde regio
+            credentials: new AWS.Credentials({
+                accessKeyId: 'YOUR_ACCESS_KEY_ID',
+                secretAccessKey: 'YOUR_SECRET_ACCESS_KEY'
+            })
+        });
+
+        const polly = new AWS.Polly();
+
+        async function speakWithPolly() {
+            const text = "Ook al voel ik me gestresst omdat ik een drukke werkdag heb, toch accepteer ik mezelf precies zoals ik ben.";
+            
+            const params = {
+                Text: text,
+                OutputFormat: 'mp3',
+                VoiceId: 'Lotte', // Nederlandse stem
+                LanguageCode: 'nl-NL',
+                TextType: 'text',
+                Engine: 'neural' // Gebruik neural engine voor betere kwaliteit
+            };
+
+            try {
+                const data = await polly.synthesizeSpeech(params).promise();
+                
+                // Converteer de audio data naar een speelbaar formaat
+                const audioBlob = new Blob([data.AudioStream], { type: 'audio/mpeg' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                const audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = 'block';
+                audioPlayer.play();
+                
+            } catch (error) {
+                console.error('Fout bij het genereren van spraak:', error);
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -361,99 +361,64 @@
         // Update de tekst in de HTML
         document.getElementById('affirmation').textContent = affirmationText;
 
-        let isPlaying = false;
-        let repeatCount = 0;
-        const maxRepeats = 3;
-        let pageStartTime = Date.now();
-
-        // Start automatisch zodra de pagina is geladen
-        window.addEventListener('load', () => {
-            isPlaying = true;
-            repeatCount = 0;
-            pageStartTime = Date.now();
-            speakAffirmation();
-        });
-
-        // Spreek de affirmatie uit
-        function speakAffirmation() {
-            if (!window.speechSynthesis) return;
-            
-            const utterance = new SpeechSynthesisUtterance(affirmationText);
-            utterance.lang = 'nl-NL';
-            utterance.rate = 0.8; // Iets langzamer voor betere uitspraak
-            utterance.pitch = 1.0; // Normale toonhoogte
-            utterance.volume = 1.0; // Maximale volume
-
-            // Wacht tot de stemmen geladen zijn
-            window.speechSynthesis.onvoiceschanged = () => {
-                const voices = window.speechSynthesis.getVoices();
-                // Zoek specifiek naar een Nederlandse stem
-                const dutchVoice = voices.find(voice => 
-                    voice.lang === 'nl-NL' && 
-                    (voice.name.includes('Google') || voice.name.includes('Microsoft'))
-                );
-                if (dutchVoice) {
-                    utterance.voice = dutchVoice;
-                }
-            };
-
-            // Zorg ervoor dat de stemmen geladen zijn
-            if (window.speechSynthesis.getVoices().length === 0) {
-                window.speechSynthesis.getVoices();
-            }
-
-            utterance.onend = function() {
-                repeatCount++;
-                if (repeatCount < maxRepeats) {
-                    setTimeout(() => {
-                        if (isPlaying) {
-                            window.speechSynthesis.speak(utterance);
-                        }
-                    }, 1000);
-                } else {
-                    // Wacht tot 5 seconden na openen van de pagina zijn verstreken
-                    const minWaitTime = 5000;
-                    const elapsedTime = Date.now() - pageStartTime;
-                    const remainingTime = Math.max(0, minWaitTime - elapsedTime);
-                    setTimeout(() => {
-                        window.location.href = 'kloppunt-kruin.html';
-                    }, remainingTime);
-                }
-            };
-
-            window.speechSynthesis.speak(utterance);
-        }
-
-        // Pauzeer sessie
-        const pausePlayButton = document.getElementById('pausePlayButton');
-        pausePlayButton.addEventListener('click', () => {
-            isPlaying = !isPlaying;
-            if (!isPlaying) {
-                window.speechSynthesis.pause();
-                pausePlayButton.innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                window.speechSynthesis.resume();
-                pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
-            }
-        });
-
-        // Zorg ervoor dat de spraak niet stopt als de browser het tabblad verlaat
-        window.addEventListener('beforeunload', () => {
-            window.speechSynthesis.cancel();
-        });
-
+        // --- OUDE MANIER: BROWSER STEM ---
+        let speech = null;
         function setupVoice() {
             speech = new SpeechSynthesisUtterance();
             speech.lang = 'nl-NL';
             speech.rate = 0.85;
             speech.pitch = 1.2;
             speech.volume = 0.9;
-
             const voices = window.speechSynthesis.getVoices();
-            console.log('Beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
-            const dutchVoice = voices.find(v => v.lang === 'nl-NL');
-            speech.voice = dutchVoice || voices[0];
+            let chosenVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
+            if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('Wavenet') && v.lang === 'nl-NL');
+            if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('Google') && v.lang === 'nl-NL');
+            if (!chosenVoice) chosenVoice = voices.find(v => v.lang === 'nl-NL');
+            speech.voice = chosenVoice || voices[0];
         }
+        let repeatCount = 0;
+        const maxRepeats = 3;
+        function speakAffirmation() {
+            if (!speech) setupVoice();
+            speech.text = affirmationText;
+            window.speechSynthesis.cancel();
+            speech.onend = function() {
+                repeatCount++;
+                if (repeatCount < maxRepeats) {
+                    setTimeout(() => {
+                        speakAffirmation();
+                    }, 1000); // 1 seconde pauze
+                } else {
+                    // Ga automatisch naar de volgende pagina
+                    window.location.href = 'kloppunt-kruin.html';
+                }
+            };
+            window.speechSynthesis.speak(speech);
+        }
+        // Start automatisch zodra de pagina is geladen
+        window.addEventListener('load', () => {
+            setupVoice();
+            repeatCount = 0;
+            setTimeout(() => {
+                speakAffirmation();
+            }, 500);
+        });
+        // Pauze/play knop (optioneel)
+        const pausePlayButton = document.getElementById('pausePlayButton');
+        pausePlayButton.addEventListener('click', () => {
+            if (window.speechSynthesis.speaking) {
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                    pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    window.speechSynthesis.pause();
+                    pausePlayButton.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            }
+        });
+        window.addEventListener('beforeunload', () => {
+            window.speechSynthesis.cancel();
+        });
     </script>
 </body>
 </html>
