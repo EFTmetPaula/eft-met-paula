@@ -30,7 +30,7 @@
             margin: 40px auto;
             padding: 20px;
             flex-grow: 1;
-            margin-bottom: 80px; /* Ruimte voor de navigatiebalk */
+            margin-bottom: 80px;
         }
 
         .header-image {
@@ -73,21 +73,12 @@
             flex: 1;
         }
 
-        .tapping-point img {
+        .tapping-image {
             width: 100px;
             height: 150px;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid white;
-        }
-
-        .tapping-video {
-            width: 100px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid white;
-            background: white;
         }
 
         .tapping-point h3 {
@@ -101,66 +92,6 @@
             content: "•";
             margin-right: 10px;
             font-size: 1.5em;
-        }
-
-        .fallback-image {
-            display: none;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .tapping-video {
-                display: none;
-            }
-            .fallback-image {
-                display: block;
-            }
-        }
-
-        .back-button {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 15px 25px;
-            text-decoration: none;
-            border-radius: 50%;
-            margin-top: 20px;
-            font-size: 24px;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            transition: transform 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: var(--accent-color);
-            transform: scale(1.1);
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .next-button {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 15px 25px;
-            text-decoration: none;
-            border-radius: 50%;
-            font-size: 24px;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            transition: transform 0.3s ease;
-        }
-
-        .next-button:hover {
-            background: var(--accent-color);
-            transform: scale(1.1);
         }
 
         .navigation-bar {
@@ -208,7 +139,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="avatar/logo-avatar-zonderbg.png" alt="EFT met Paula" class="header-image">
+        <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" class="header-image">
         
         <div class="content-box">
             <h2>De Kloppunten</h2>
@@ -220,10 +151,7 @@
                     <h3>Karatepunt</h3>
                     <p>De zijkant van je hand, tussen je pink en pols. Dit is het punt waar je met je hand zou slaan in karate.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/karatepunt.mp4" type="video/mp4">
-                    <img src="avatar/karatepunt.png" alt="Karatepunt" class="fallback-image">
-                </video>
+                <img src="avatar/karatepunt.jpg" alt="Karatepunt" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -231,10 +159,7 @@
                     <h3>Kruin van het hoofd</h3>
                     <p>Bovenaan je hoofd, precies in het midden. Je kunt dit punt vinden door met je vingers vanaf je voorhoofd naar achteren te voelen tot je het hoogste punt bereikt. Je klopt hier met de volledige platte hand.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/kruin.mp4" type="video/mp4">
-                    <img src="avatar/kruin.png" alt="Kruin van het hoofd" class="fallback-image">
-                </video>
+                <img src="avatar/kruin.jpg" alt="Kruin van het hoofd" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -242,10 +167,7 @@
                     <h3>Wenkbrauw</h3>
                     <p>De binnenkant van je wenkbrauw, waar deze begint bij je neus. Dit punt bevindt zich net boven de binnenste ooghoek.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/wenkbrauw.mp4" type="video/mp4">
-                    <img src="avatar/wenkbrauw.png" alt="Wenkbrauw punt" class="fallback-image">
-                </video>
+                <img src="avatar/wenkbrauw.jpg" alt="Wenkbrauw punt" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -253,10 +175,7 @@
                     <h3>Zijkant van het oog</h3>
                     <p>Op het bot aan de buitenkant van je oog.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/zijkant-oog.mp4" type="video/mp4">
-                    <img src="avatar/zijkant-oog.png" alt="Zijkant van het oog" class="fallback-image">
-                </video>
+                <img src="avatar/zijkant-oog.jpg" alt="Zijkant van het oog" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -264,10 +183,7 @@
                     <h3>Onder het oog</h3>
                     <p>Op het bot onder je oog.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/Onder-oog.mp4" type="video/mp4">
-                    <img src="avatar/onder-oog.png" alt="Onder het oog" class="fallback-image">
-                </video>
+                <img src="avatar/onder-oog.jpg" alt="Onder het oog" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -275,10 +191,7 @@
                     <h3>Onder de neus</h3>
                     <p>Het punt tussen je neus en bovenlip, in de groef onder je neus.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/onder-neus.mp4" type="video/mp4">
-                    <img src="avatar/onder-neus.png" alt="Onder de neus" class="fallback-image">
-                </video>
+                <img src="avatar/onder-neus.jpg" alt="Onder de neus" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -286,10 +199,7 @@
                     <h3>Kin</h3>
                     <p>Het midden van je kin, tussen je onderlip en de punt van je kin.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/kin.mp4" type="video/mp4">
-                    <img src="avatar/kin.png" alt="Kin punt" class="fallback-image">
-                </video>
+                <img src="avatar/kin.jpg" alt="Kin punt" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -297,10 +207,7 @@
                     <h3>Sleutelbeen</h3>
                     <p>2 cm onder je de rechterkant van je sleutelbeen.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/steutelbeen.mp4" type="video/mp4">
-                    <img src="avatar/sleutelbeen.png" alt="Sleutelbeen punt" class="fallback-image">
-                </video>
+                <img src="avatar/sleutelbeen.jpg" alt="Sleutelbeen punt" class="tapping-image">
             </div>
 
             <div class="tapping-point">
@@ -308,16 +215,13 @@
                     <h3>Onder de arm</h3>
                     <p>Ongeveer 10 cm onder je oksel, te hoogte (voor de dames) van je BH band, aan de zijkant van je lichaam.</p>
                 </div>
-                <video class="tapping-video" autoplay loop muted playsinline>
-                    <source src="avatar/onder-arm.mp4" type="video/mp4">
-                    <img src="avatar/onder-arm.png" alt="Onder de arm" class="fallback-image">
-                </video>
+                <img src="avatar/onder-arm.jpg" alt="Onder de arm" class="tapping-image">
             </div>
         </div>
     </div>
     <div class="navigation-bar">
         <a href="index.html" class="nav-button" title="Home">
-            <img src="avatar/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
         </a>
         <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
             <i class="fas fa-info-circle"></i>
