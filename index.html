@@ -334,6 +334,10 @@
             <a href="extra-hulp.html" class="menu-item">
                 <h2>Extra Hulp</h2>
             </a>
+            
+            <a href="install-app.html" class="menu-item">
+                <h2>📱 App Installeren</h2>
+            </a>
         </div>
 
         <div class="disclaimer">
@@ -366,6 +370,19 @@
         </a>
     </div>
     <script>
+        // Service Worker registratie voor PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
         // Voortgangsindicator
         const progressBar = document.getElementById('progressBar');
         let progress = 0;
