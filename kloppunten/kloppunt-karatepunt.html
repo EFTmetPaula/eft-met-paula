@@ -361,62 +361,139 @@
         // Update de tekst in de HTML
         document.getElementById('affirmation').textContent = affirmationText;
 
-        // --- OUDE MANIER: BROWSER STEM ---
-        let speech = null;
-        function setupVoice() {
-            speech = new SpeechSynthesisUtterance();
+        // --- NIEUWE MANIER: COQUI TTS SERVER ---
+        let audioPlayer = null;
+        let repeatCount = 0;
+        const maxRepeats = 3;
+        let isPlaying = false;
+
+        async function speakAffirmation() {
+            try {
+                // Toon loading state
+                const pausePlayButton = document.getElementById('pausePlayButton');
+                pausePlayButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                
+                // Roep TTS server aan
+                const response = await fetch('http://localhost:5002/api/tts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: affirmationText,
+                        speed: 0.9  // Iets langzamer voor betere verstaanbaarheid
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Converteer response naar audio blob
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                // Maak audio element
+                if (audioPlayer) {
+                    audioPlayer.pause();
+                    URL.revokeObjectURL(audioPlayer.src);
+                }
+                
+                audioPlayer = new Audio(audioUrl);
+                audioPlayer.volume = 0.8;
+                
+                // Event listeners voor audio
+                audioPlayer.onended = function() {
+                    repeatCount++;
+                    if (repeatCount < maxRepeats) {
+                        setTimeout(() => {
+                            speakAffirmation();
+                        }, 1000); // 1 seconde pauze
+                    } else {
+                        // Ga automatisch naar de volgende pagina
+                        window.location.href = 'kloppunt-kruin.html';
+                    }
+                };
+                
+                audioPlayer.onerror = function() {
+                    console.error('Audio playback error');
+                    pausePlayButton.innerHTML = '<i class="fas fa-play"></i>';
+                    isPlaying = false;
+                };
+                
+                // Start afspelen
+                await audioPlayer.play();
+                isPlaying = true;
+                pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
+                
+            } catch (error) {
+                console.error('TTS Error:', error);
+                // Fallback naar browser stem als TTS server niet beschikbaar is
+                fallbackToBrowserSpeech();
+            }
+        }
+
+        // Fallback naar browser stem
+        function fallbackToBrowserSpeech() {
+            console.log('Gebruik browser stem als fallback');
+            const speech = new SpeechSynthesisUtterance();
             speech.lang = 'nl-NL';
             speech.rate = 0.85;
             speech.pitch = 1.2;
             speech.volume = 0.9;
+            
             const voices = window.speechSynthesis.getVoices();
             let chosenVoice = voices.find(v => v.name === 'Microsoft Hanna Online' && v.lang === 'nl-NL');
             if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('Wavenet') && v.lang === 'nl-NL');
             if (!chosenVoice) chosenVoice = voices.find(v => v.name.includes('Google') && v.lang === 'nl-NL');
             if (!chosenVoice) chosenVoice = voices.find(v => v.lang === 'nl-NL');
             speech.voice = chosenVoice || voices[0];
-        }
-        let repeatCount = 0;
-        const maxRepeats = 3;
-        function speakAffirmation() {
-            if (!speech) setupVoice();
+            
             speech.text = affirmationText;
             window.speechSynthesis.cancel();
             speech.onend = function() {
                 repeatCount++;
                 if (repeatCount < maxRepeats) {
                     setTimeout(() => {
-                        speakAffirmation();
-                    }, 1000); // 1 seconde pauze
+                        fallbackToBrowserSpeech();
+                    }, 1000);
                 } else {
-                    // Ga automatisch naar de volgende pagina
                     window.location.href = 'kloppunt-kruin.html';
                 }
             };
             window.speechSynthesis.speak(speech);
         }
+
         // Start automatisch zodra de pagina is geladen
         window.addEventListener('load', () => {
-            setupVoice();
             repeatCount = 0;
             setTimeout(() => {
                 speakAffirmation();
             }, 500);
         });
-        // Pauze/play knop (optioneel)
+
+        // Pauze/play knop
         const pausePlayButton = document.getElementById('pausePlayButton');
         pausePlayButton.addEventListener('click', () => {
-            if (window.speechSynthesis.speaking) {
-                if (window.speechSynthesis.paused) {
-                    window.speechSynthesis.resume();
-                    pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    window.speechSynthesis.pause();
+            if (audioPlayer) {
+                if (isPlaying) {
+                    audioPlayer.pause();
                     pausePlayButton.innerHTML = '<i class="fas fa-play"></i>';
+                    isPlaying = false;
+                } else {
+                    audioPlayer.play();
+                    pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
+                    isPlaying = true;
                 }
             }
         });
+
+        // Cleanup bij verlaten pagina
         window.addEventListener('beforeunload', () => {
+            if (audioPlayer) {
+                audioPlayer.pause();
+                URL.revokeObjectURL(audioPlayer.src);
+            }
             window.speechSynthesis.cancel();
         });
     </script>

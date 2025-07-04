@@ -8,28 +8,48 @@ app = Flask(__name__)
 CORS(app)
 
 print("Laden van TTS model...")
-# Probeer eerst het Nederlandse model, anders gebruik een algemeen model
+# Probeer eerst betere Nederlandse modellen, anders gebruik een algemeen model
 try:
-    tts = TTS(model_name="tts_models/nl/mai/tacotron2-DDC", progress_bar=False)
-    print("Nederlands TTS model geladen!")
+    # Probeer eerst een moderner Nederlands model
+    tts = TTS(model_name="tts_models/nl/mai/fastpitch", progress_bar=False)
+    print("Nederlands FastPitch model geladen!")
 except:
     try:
-        tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False)
-        print("Engels TTS model geladen (fallback)")
+        # Fallback naar het originele Nederlandse model
+        tts = TTS(model_name="tts_models/nl/mai/tacotron2-DDC", progress_bar=False)
+        print("Nederlands Tacotron2 model geladen!")
     except:
-        tts = TTS(progress_bar=False)
-        print("Standaard TTS model geladen")
+        try:
+            # Probeer een modern Engels model als fallback
+            tts = TTS(model_name="tts_models/en/ljspeech/fastpitch", progress_bar=False)
+            print("Engels FastPitch model geladen (fallback)")
+        except:
+            try:
+                # Fallback naar het originele Engelse model
+                tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False)
+                print("Engels Tacotron2 model geladen (fallback)")
+            except:
+                # Laatste fallback naar standaard model
+                tts = TTS(progress_bar=False)
+                print("Standaard TTS model geladen")
 
 @app.route('/api/tts', methods=['POST'])
 def generate_speech():
     try:
         data = request.json
         text = data.get('text', '')
+        speed = data.get('speed', 1.0)  # Spraaksnelheid (0.5 = langzaam, 2.0 = snel)
+        
         if not text:
             return {'error': 'Geen tekst opgegeven'}, 400
         
-        # Genereer spraak
-        wav = tts.tts(text=text)
+        # Genereer spraak met aangepaste parameters
+        wav = tts.tts(
+            text=text,
+            speaker=None,  # Gebruik standaard spreker
+            language=None,  # Auto-detect taal
+            speed=speed
+        )
         
         # Converteer naar audio bytes
         audio_bytes = io.BytesIO()

@@ -2,7 +2,7 @@
     "name": "EFT met Paula - Stressvermindering",
     "short_name": "EFT Paula",
     "description": "Leer EFT (Emotional Freedom Techniques) met Paula Sangers voor stressvermindering en emotionele balans. Professionele zelfhulptool voor stress, angst en emotionele blokkades.",
-    "start_url": "/",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#3d5a55",
     "theme_color": "#3d5a55",
