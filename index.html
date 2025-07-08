@@ -368,6 +368,15 @@
         </a>
     </div>
     <script>
+        // Voorkom onbedoelde redirects
+        if (window.location.pathname !== '/eft-met-paula/' && 
+            window.location.pathname !== '/eft-met-paula/index.html' && 
+            window.location.pathname !== '/index.html' && 
+            window.location.pathname !== '/') {
+            // Als we niet op de juiste pagina zijn, ga naar index.html
+            window.location.href = './index.html';
+        }
+
         // Service Worker registratie voor PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

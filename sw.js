@@ -37,13 +37,32 @@ self.addEventListener('install', event => {
 
 // Fetch event - serve from cache when offline
 self.addEventListener('fetch', event => {
+  const request = event.request;
+  const url = new URL(request.url);
+  
+  // Zorg ervoor dat de root URL altijd naar index.html gaat
+  if (url.pathname === '/' || url.pathname === '/eft-met-paula/' || url.pathname === '/eft-met-paula') {
+    event.respondWith(
+      caches.match('./index.html')
+        .then(response => {
+          return response || fetch('./index.html');
+        })
+    );
+    return;
+  }
+  
   event.respondWith(
-    caches.match(event.request)
+    caches.match(request)
       .then(response => {
         // Return cached version or fetch from network
-        return response || fetch(event.request);
-      }
-    )
+        return response || fetch(request);
+      })
+      .catch(() => {
+        // Fallback voor offline gebruik
+        if (request.destination === 'document') {
+          return caches.match('./index.html');
+        }
+      })
   );
 });
 

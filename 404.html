@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina niet gevonden - EFT met Paula</title>
+    <meta http-equiv="refresh" content="3;url=./index.html">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #3d5a55;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 600px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        
+        .loading {
+            margin-top: 30px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        a {
+            color: #9bc7c1;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pagina niet gevonden</h1>
+        <p>De pagina die je zoekt bestaat niet. Je wordt automatisch doorgestuurd naar de hoofdpagina.</p>
+        
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Je wordt doorgestuurd naar <a href="./index.html">de hoofdpagina</a>...</p>
+        </div>
+    </div>
+    
+    <script>
+        // Automatische redirect na 3 seconden
+        setTimeout(() => {
+            window.location.href = './index.html';
+        }, 3000);
+        
+        // Als de gebruiker op de link klikt, direct redirecten
+        document.addEventListener('DOMContentLoaded', () => {
+            const link = document.querySelector('a');
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = './index.html';
+            });
+        });
+    </script>
+</body>
+</html> 
