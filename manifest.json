@@ -69,7 +69,7 @@
     "categories": ["health", "wellness", "self-help", "medical"],
     "lang": "nl-NL",
     "dir": "ltr",
-    "scope": "/",
+    "scope": "./",
     "prefer_related_applications": false,
     "related_applications": [],
     "screenshots": [
