@@ -162,15 +162,8 @@ function formatSituation(situation) {
         }
     }
     
-    // Controleer of 'omdat' nog toegevoegd moet worden
-    const needsOmdat = !formatted.toLowerCase().includes('omdat') && 
-                       !formatted.toLowerCase().startsWith('ik ') &&
-                       !formatted.toLowerCase().startsWith('er ') &&
-                       !formatted.toLowerCase().startsWith('het ');
-    
-    if (needsOmdat) {
-        formatted = 'omdat ' + formatted;
-    }
+    // NIET automatisch 'omdat' toevoegen - dat gebeurt in de affirmatie zelf
+    // Alleen zorgen dat de situatie een vloeiende zin is
     
     return formatted;
 }
@@ -185,9 +178,9 @@ function createAffirmation(emotion, situation, type = 'setup') {
     switch(type) {
         case 'setup': // Karatepunt - volledige setup affirmatie
             if (formattedEmotion.useVerb) {
-                affirmationText = `Ook al ${formattedEmotion.emotion} ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
+                affirmationText = `Ook al ${formattedEmotion.emotion} omdat ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
             } else {
-                affirmationText = `Ook al voel ik me ${formattedEmotion.emotion} ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
+                affirmationText = `Ook al voel ik me ${formattedEmotion.emotion} omdat ${formattedSituation}, toch accepteer ik mezelf precies zoals ik ben.`;
             }
             break;
             
