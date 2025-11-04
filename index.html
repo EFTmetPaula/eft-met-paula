@@ -377,14 +377,14 @@
             window.location.href = './index.html';
         }
 
-        // Service Worker registratie voor PWA met cache clearing
+        // Service Worker VERWIJDERD - cache clearing code
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // Verwijder ALLE oude service workers en caches eerst
+                // Verwijder ALLE oude service workers
                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
                     for(let registration of registrations) {
                         registration.unregister();
-                        console.log('Oude SW verwijderd');
+                        console.log('Service Worker verwijderd - geen cache meer');
                     }
                 });
                 
@@ -392,21 +392,10 @@
                 caches.keys().then(function(cacheNames) {
                     return Promise.all(
                         cacheNames.map(function(cacheName) {
-                            console.log('Verwijder cache:', cacheName);
+                            console.log('Cache verwijderd:', cacheName);
                             return caches.delete(cacheName);
                         })
                     );
-                }).then(() => {
-                    // Na het verwijderen van oude SW en cache, registreer nieuwe
-                    setTimeout(() => {
-                        navigator.serviceWorker.register('./sw.js')
-                            .then(registration => {
-                                console.log('Nieuwe SW registered: ', registration);
-                            })
-                            .catch(registrationError => {
-                                console.log('SW registration failed: ', registrationError);
-                            });
-                    }, 500);
                 });
             });
         }
