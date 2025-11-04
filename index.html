@@ -377,16 +377,37 @@
             window.location.href = './index.html';
         }
 
-        // Service Worker registratie voor PWA
+        // Service Worker registratie voor PWA met cache clearing
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
+                // Verwijder ALLE oude service workers en caches eerst
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                        console.log('Oude SW verwijderd');
+                    }
+                });
+                
+                // Verwijder alle caches
+                caches.keys().then(function(cacheNames) {
+                    return Promise.all(
+                        cacheNames.map(function(cacheName) {
+                            console.log('Verwijder cache:', cacheName);
+                            return caches.delete(cacheName);
+                        })
+                    );
+                }).then(() => {
+                    // Na het verwijderen van oude SW en cache, registreer nieuwe
+                    setTimeout(() => {
+                        navigator.serviceWorker.register('./sw.js')
+                            .then(registration => {
+                                console.log('Nieuwe SW registered: ', registration);
+                            })
+                            .catch(registrationError => {
+                                console.log('SW registration failed: ', registrationError);
+                            });
+                    }, 500);
+                });
             });
         }
 
