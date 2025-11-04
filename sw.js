@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eft-paula-v2';
+const CACHE_NAME = 'eft-paula-v3';
 const urlsToCache = [
   './',
   './index.html',
@@ -11,15 +11,15 @@ const urlsToCache = [
   './styles.css',
   './manifest.json',
   './logo/logo-avatar-zonderbg.png',
-  './avatar/karatepunt.jpg',
-  './avatar/kruin.jpg',
-  './avatar/wenkbrauw.jpg',
-  './avatar/zijkant-oog.jpg',
-  './avatar/onder-oog.jpg',
-  './avatar/onder-neus.jpg',
-  './avatar/kin.jpg',
-  './avatar/sleutelbeen.jpg',
-  './avatar/onder-arm.jpg',
+  './avatar/karatepunt.jpg?v=3',
+  './avatar/kruin.jpg?v=3',
+  './avatar/wenkbrauw.jpg?v=3',
+  './avatar/zijkant-oog.jpg?v=3',
+  './avatar/onder-oog.jpg?v=3',
+  './avatar/onder-neus.jpg?v=3',
+  './avatar/kin.jpg?v=3',
+  './avatar/sleutelbeen.jpg?v=3',
+  './avatar/onder-arm.jpg?v=3',
   './avatar/logo-avatar.jpg',
   './avatar/uitleg-eft.mp4'
 ];
