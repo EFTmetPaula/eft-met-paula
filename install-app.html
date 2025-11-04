@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Installeer de EFT met Paula app op je telefoon - een Progressive Web App voor EFT tapping sessies.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Installeer EFT App - EFT met Paula">
+    <meta property="og:description" content="Installeer de EFT app op je telefoon voor snelle toegang tot EFT tapping sessies.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eftmetpaula.github.io/eft-met-paula/install-app.html">
+    <link rel="icon" type="image/png" href="logo/favicon.png">
+    <title>Installeer EFT App - EFT met Paula</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --primary-color: #3d5a55;
+            --secondary-color: #3d5a55;
+            --text-color: #1a2c28;
+            --accent-color: #3d5a55;
+            --hover-color: #2c423e;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        h1, h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+        }
+
+        .install-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .install-section h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .install-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .install-steps li {
+            color: white;
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .install-steps li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            color: var(--success-color);
+            background: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .install-steps {
+            counter-reset: step-counter;
+        }
+
+        .device-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .benefits-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .benefits-list li {
+            color: white;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            color: var(--success-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 20px auto;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .install-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #3d5a55; margin: 0; padding: 0;">
+    <div class="container">
+        <div class="card">
+            <h1><i class="fas fa-download"></i> Installeer de EFT-app</h1>
+            
+            <div class="install-section">
+                <h3><i class="fas fa-mobile-alt device-icon"></i>iPhone (Safari)</h3>
+                <ol class="install-steps">
+                    <li>Open Safari en ga naar deze pagina</li>
+                    <li>Tik op de deel-knop (vierkant met pijl omhoog)</li>
+                    <li>Scroll naar beneden en tik op "Zet op beginscherm"</li>
+                    <li>Tik op "Toevoegen"</li>
+                    <li>De app verschijnt nu op je beginscherm!</li>
+                </ol>
+            </div>
+
+            <div class="install-section">
+                <h3><i class="fab fa-android device-icon"></i>Android (Chrome)</h3>
+                <ol class="install-steps">
+                    <li>Open Chrome en ga naar deze pagina</li>
+                    <li>Tik op het menu (drie puntjes rechtsboven)</li>
+                    <li>Tik op "App installeren" of "Toevoegen aan beginscherm"</li>
+                    <li>Bevestig de installatie</li>
+                    <li>De app verschijnt nu op je beginscherm!</li>
+                </ol>
+            </div>
+
+            <div class="button-container">
+                <a href="index.html" class="action-button">
+                    <i class="fas fa-home"></i> Terug naar webversie
+                </a>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; color: white; opacity: 0.8;">
+                <p><i class="fas fa-info-circle"></i> Heb je problemen met installeren? Neem contact op via e-mail: <a href="mailto:info@paulasangers.nl" style="color: white; text-decoration: underline;">info@paulasangers.nl</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation-bar">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" class="nav-logo">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+
+    <script>
+        // Service Worker registratie
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Install prompt voor PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+    </script>
+</body>
+</html> 

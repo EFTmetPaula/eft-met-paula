@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eindpagina - EFT met Paula</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #3d5a55;  /* Donkerder groen voor beter contrast */
+            --secondary-color: #3d5a55;
+            --text-color: #1a2c28;     /* Donkerder tekst voor beter contrast */
+            --accent-color: #3d5a55;
+            --hover-color: #2c423e;    /* Nog donkerder voor hover states */
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px; /* Ruimte voor de navigatiebalk */
+        }
+
+        .card {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        h1, h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+        }
+
+        .breathing-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .breathing-text {
+            font-size: 1.4em;
+            margin: 20px 0;
+            color: white;
+            font-weight: 500;
+        }
+
+        .intensity-meter {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .meter-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .meter-label {
+            font-size: 1.2em;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to right, #4CAF50, #FF0000);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .result-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .action-button:hover::after {
+            transform: translateX(100%);
+        }
+
+        .help-button {
+            background-color: #e74c3c;  /* Feller rood voor beter contrast */
+            color: white;
+            margin-top: 20px;
+        }
+
+        .help-button:hover {
+            background-color: #c0392b;  /* Donkerder rood voor hover */
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .nav-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .nav-button:hover::after {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .nav-button.disabled:hover {
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin-bottom: 100px;
+            }
+
+            .nav-button {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .action-button, .nav-button {
+                transition: none;
+            }
+            
+            .action-button::after, .nav-button::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #3d5a55; margin: 0; padding: 0;">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="container">
+        <div class="card">
+            <div class="breathing-container">
+                <div class="breathing-text" id="breathingText">
+                    Adem diep in...
+                </div>
+            </div>
+
+            <div class="intensity-meter">
+                <h2>Hoe voel je je nu?</h2>
+                <div class="meter-container">
+                    <div class="meter-label" id="meterValue">5</div>
+                    <input type="range" min="0" max="10" value="5" id="intensitySlider">
+                </div>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <div id="resultText"></div>
+                <div class="button-container">
+                    <button class="action-button" id="restartButton" style="display: none;" onclick="window.location.href='eft-tapping.html'">Herstart Oefening</button>
+                    <button class="action-button" id="newExerciseButton" style="display: none;">Nieuwe Oefening</button>
+                </div>
+            </div>
+
+            <button class="action-button help-button tooltip" onclick="window.location.href='extra-hulp.html'">
+                <i class="fas fa-hands-helping"></i>
+                Extra Hulp Nodig?
+                <span class="tooltip-text">Klik hier voor professionele hulp en extra tips</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="navigation-bar">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+
+    <script>
+        // Voortgangsindicator
+        const progressBar = document.getElementById('progressBar');
+        let progress = 0;
+        
+        function updateProgress() {
+            progress += 0.1;
+            if (progress <= 1) {
+                progressBar.style.transform = `scaleX(${progress})`;
+                requestAnimationFrame(updateProgress);
+            }
+        }
+        
+        // Start de voortgangsindicator wanneer de pagina laadt
+        window.addEventListener('load', () => {
+            progressBar.classList.add('active');
+            updateProgress();
+        });
+
+        // Ademhalingsoefening
+        const breathingText = document.getElementById('breathingText');
+        let isBreathing = true;
+
+        function startBreathing() {
+            if (isBreathing) {
+                breathingText.textContent = 'Adem diep in...';
+                setTimeout(() => {
+                    breathingText.textContent = 'Adem langzaam uit...';
+                }, 4000);
+            }
+        }
+
+        // Start de ademhalingsoefening één keer
+        startBreathing();
+
+        // Intensiteitsmeter
+        const intensitySlider = document.getElementById('intensitySlider');
+        const meterValue = document.getElementById('meterValue');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultText = document.getElementById('resultText');
+        const restartButton = document.getElementById('restartButton');
+        const newExerciseButton = document.getElementById('newExerciseButton');
+
+        // Laad de beginintensiteit
+        const startIntensity = localStorage.getItem('startIntensity') || 0;
+
+        // Update meter waarde wanneer de slider beweegt
+        intensitySlider.addEventListener('input', function(e) {
+            meterValue.textContent = e.target.value;
+            
+            // Toon resultaat na 2 seconden
+            setTimeout(() => {
+                resultContainer.style.display = 'block';
+                
+                if (e.target.value == 0) {
+                    resultText.innerHTML = `
+                        <h2>Gefeliciteerd! 🎉</h2>
+                        <p>Wat fijn dat de spanning volledig over is. Je hebt de oefening succesvol afgerond.</p>
+                        <div class="button-container">
+                            <button class="action-button" onclick="window.location.href='eft-tapping.html'">
+                                <i class="fas fa-home"></i>
+                                Terug naar home
+                            </button>
+                            <button class="action-button" id="newExerciseButton">Nieuwe Oefening</button>
+                        </div>
+                    `;
+                } else if (e.target.value == 1) {
+                    resultText.innerHTML = `
+                        <h2>Bijna daar! 🌟</h2>
+                        <p>Je voelt nog een beetje spanning. Vaak is het nodig om de oefening een paar keer te herhalen voor de spanning volledig is weggezakt. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 2) {
+                    resultText.innerHTML = `
+                        <h2>Goed bezig! 🌱</h2>
+                        <p>De spanning is al flink verminderd. Het is heel normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 3) {
+                    resultText.innerHTML = `
+                        <h2>Mooie vooruitgang! 🌈</h2>
+                        <p>Je bent al een heel eind op weg. Bij EFT is het normaal om de oefening een paar keer te herhalen voor het beste resultaat. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 4) {
+                    resultText.innerHTML = `
+                        <h2>Je bent op de goede weg! 🌟</h2>
+                        <p>De spanning is al wat minder. Door de oefening te herhalen, geef je jezelf de tijd om de spanning volledig los te laten. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 5) {
+                    resultText.innerHTML = `
+                        <h2>Je kunt dit! 💪</h2>
+                        <p>De spanning is nog aanwezig. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 6) {
+                    resultText.innerHTML = `
+                        <h2>Blijf bij jezelf 🌟</h2>
+                        <p>De spanning is nog sterk. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 7) {
+                    resultText.innerHTML = `
+                        <h2>Neem je tijd ⏳</h2>
+                        <p>De spanning is nog hoog. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 8) {
+                    resultText.innerHTML = `
+                        <h2>Vertrouw op jezelf 🌱</h2>
+                        <p>De spanning is nog erg aanwezig. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 9) {
+                    resultText.innerHTML = `
+                        <h2>Je bent sterker dan je denkt 💫</h2>
+                        <p>De spanning is nog heel sterk. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                } else if (e.target.value == 10) {
+                    resultText.innerHTML = `
+                        <h2>Elke stap telt 🌈</h2>
+                        <p>De spanning is nog maximaal. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.</p>
+                    `;
+                    restartButton.style.display = 'block';
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>EFT met Paula - Leer EFT Tapping voor Stressvermindering</title>
+    <meta name="description" content="Leer EFT (Emotional Freedom Techniques) met Paula Sangers. Een effectieve methode voor stressvermindering en emotionele balans. Start nu met EFT tapping!">
+    <meta name="keywords" content="EFT, EFT tapping, stressvermindering, emotionele vrijheid, Paula Sangers, zelfhulp, spanning, angst">
+    <meta name="author" content="Paula Sangers">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.paulasangers.nl/">
+    <meta property="og:title" content="EFT met Paula - Leer EFT Tapping voor Stressvermindering">
+    <meta property="og:description" content="Leer EFT (Emotional Freedom Techniques) met Paula Sangers. Een effectieve methode voor stressvermindering en emotionele balans.">
+    <meta property="og:image" content="https://www.paulasangers.nl/logo/logo-avatar-zonderbg.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.paulasangers.nl/">
+    <meta property="twitter:title" content="EFT met Paula - Leer EFT Tapping voor Stressvermindering">
+    <meta property="twitter:description" content="Leer EFT (Emotional Freedom Techniques) met Paula Sangers. Een effectieve methode voor stressvermindering en emotionele balans.">
+    <meta property="twitter:image" content="https://www.paulasangers.nl/logo/logo-avatar-zonderbg.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.paulasangers.nl/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo/logo-avatar-zonderbg.png">
+    <link rel="apple-touch-icon" href="logo/logo-avatar-zonderbg.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+    <style>
+        :root {
+            --primary-color: #3d5a55;  /* Donkerder groen voor beter contrast */
+            --secondary-color: #3d5a55;
+            --text-color: #1a2c28;     /* Donkerder tekst voor beter contrast */
+            --accent-color: #3d5a55;
+            --hover-color: #2c423e;    /* Nog donkerder voor hover states */
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px; /* Ruimte voor de navigatiebalk */
+        }
+
+        .header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header img {
+            max-width: 300px;
+            height: auto;
+            text-decoration: none;
+            border: none;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        .intro {
+            background: var(--primary-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .intro p {
+            margin: 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .intro h2 {
+            color: #9bc7c1;
+            margin-bottom: 15px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .menu-grid-bottom {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid, .menu-grid-bottom {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-item {
+                padding: 25px;
+            }
+
+            .nav-button {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        .menu-item {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(77, 106, 102, 0.2);
+            background: var(--hover-color);
+        }
+
+        .menu-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .menu-item:hover::after {
+            transform: translateX(100%);
+        }
+
+        .menu-item h2 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .menu-item p {
+            margin-bottom: 0;
+            color: white;
+        }
+
+        .menu-item .icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .disclaimer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: white;
+        }
+
+        .disclaimer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .disclaimer a:hover {
+            text-decoration: underline;
+        }
+
+        .header-image {
+            max-width: 300px;
+            height: auto;
+            text-decoration: none;
+            border: none;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .nav-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .nav-button:hover::after {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .menu-item, .nav-button {
+                transition: none;
+            }
+            
+            .menu-item::after, .nav-button::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #3d5a55; margin: 0; padding: 0;">
+    
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "EFT met Paula",
+        "description": "Leer EFT (Emotional Freedom Techniques) met Paula Sangers voor stressvermindering en emotionele balans",
+        "url": "https://www.paulasangers.nl",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Paula Sangers",
+            "url": "https://www.paulasangers.nl",
+            "jobTitle": "EFT Practitioner"
+        }
+    }
+    </script>
+    
+    <div class="container">
+        <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula logo" class="header-image pulse" loading="lazy">
+        <div class="intro">
+            <h2>Welkom bij EFT met Paula</h2>
+            <p>Ontdek de kracht van EFT (Emotional Freedom Techniques) en leer hoe je zelf emotionele en fysieke spanning kunt verminderen. Deze app begeleidt je stap voor stap door de EFT-techniek, zodat je direct aan de slag kunt.</p>
+            
+            <p>Ontdek hoe je zelf spanning kunt verminderen.</p>
+        </div>
+
+        <div class="menu-grid">
+            <a href="wat-is-eft.html" class="menu-item tooltip">
+                <h2>Wat is EFT?</h2>
+                <span class="tooltip-text">Leer meer over de Emotional Freedom Techniques</span>
+            </a>
+
+            <a href="kloppunten.html" class="menu-item tooltip">
+                <h2>Kloppunten</h2>
+                <span class="tooltip-text">Ontdek de verschillende EFT kloppunten</span>
+            </a>
+        </div>
+
+        <div class="menu-grid-bottom">
+            <a href="eft-tapping.html" class="menu-item">
+                <h2>Start met EFT</h2>
+            </a>
+
+            <a href="extra-hulp.html" class="menu-item">
+                <h2>Extra Hulp</h2>
+            </a>
+            
+            <a href="install-app.html" class="menu-item">
+                <h2>App installeren</h2>
+            </a>
+        </div>
+
+        <div class="disclaimer">
+            <p>Disclaimer: Deze zelfhulptool is alleen geschikt voor eenvoudige lichte spanningsklachten. 
+               Heb je meer nodig, neem dan contact op met een <a href="extra-hulp.html" style="color: white; text-decoration: underline;">gecertificeerde EFT-coach</a>. 
+               <a href="disclaimer.html" style="color: white; text-decoration: underline;">Bekijk volledige disclaimer</a>.</p>
+        </div>
+
+        <div class="feedback-link" style="text-align:center; margin-bottom:10px; color:white;">
+            Werkt de app niet goed of heb je feedback? Mail naar <a href="mailto:info@paulasangers.nl" style="color:#fff; text-decoration:underline;">info@paulasangers.nl</a>.
+        </div>
+    </div>
+    <div class="navigation-bar">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+    <script>
+        // Voorkom onbedoelde redirects
+        if (window.location.pathname !== '/eft-met-paula/' && 
+            window.location.pathname !== '/eft-met-paula/index.html' && 
+            window.location.pathname !== '/index.html' && 
+            window.location.pathname !== '/') {
+            // Als we niet op de juiste pagina zijn, ga naar index.html
+            window.location.href = './index.html';
+        }
+
+        // Service Worker registratie voor PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+    </script>
+</body>
+</html> 

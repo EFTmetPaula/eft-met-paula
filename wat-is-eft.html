@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wat is EFT? - EFT met Paula</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4d6a66;
+            --secondary-color: #4d6a66;
+            --text-color: #2c3e50;
+            --accent-color: #4d6a66;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px; /* Ruimte voor de navigatiebalk */
+        }
+
+        .header-image {
+            max-width: 300px;
+            height: auto;
+            text-decoration: none;
+            border: none;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .header-video {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-box {
+            background: var(--primary-color);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .content-box h2 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .content-box p {
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 50%;
+            margin-top: 20px;
+            font-size: 24px;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .next-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 50%;
+            font-size: 24px;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .next-button:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .nav-button.disabled:hover {
+            transform: none;
+        }
+    </style>
+</head>
+<body style="background-color: #4d6a66; margin: 0; padding: 0;">
+    <div class="container">
+        <div class="video-container">
+            <video src="avatar/uitleg-eft.mp4" controls preload="none" loading="lazy" poster="avatar/logo-avatar.jpg">
+                <p>Je browser ondersteunt geen video afspelen. <a href="avatar/uitleg-eft.mp4">Download de video</a>.</p>
+            </video>
+        </div>
+        
+        <div class="content-box">
+            <h2>Wat is EFT?</h2>
+            <p>EFT (Emotional Freedom Techniques) is een eenvoudige en effectieve techniek die je helpt om emotionele en fysieke klachten te verminderen. Het combineert elementen van de traditionele Chinese acupunctuur met moderne psychologie.</p>
+            
+            <p>Door het kloppen op specifieke acupressuurpunten terwijl je je focust op een probleem of emotie, kan EFT helpen om:</p>
+            
+            <ul>
+                <li>Stress en angst te verminderen</li>
+                <li>Emotionele blokkades op te lossen</li>
+                <li>Meer innerlijke rust te ervaren</li>
+                <li>Je beter te voelen in je lichaam</li>
+            </ul>
+            
+            <p>EFT is een veilige en natuurlijke methode die je gemakkelijk zelf kunt leren en toepassen.</p>
+        </div>
+    </div>
+    <div class="navigation-bar">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+</body>
+</html> 

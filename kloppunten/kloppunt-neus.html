@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFT Kloppunt - Onder Neus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4d6a66;
+            --secondary-color: #4d6a66;
+            --text-color: #2c3e50;
+            --accent-color: #4d6a66;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+        }
+
+        .point-info {
+            background: var(--primary-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .point-image {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .affirmation {
+            font-style: italic;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .control-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: 3px solid white;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 12px rgba(77, 106, 102, 0.3);
+        }
+
+        .control-button:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        .control-button i {
+            font-size: 1.4em;
+        }
+
+        #startButton {
+            background-color: #4CAF50;
+        }
+
+        #startButton:hover {
+            background-color: #45a049;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .nav-button i {
+            font-size: 1.2em;
+            color: white;
+        }
+
+        .nav-button span {
+            white-space: nowrap;
+            color: white;
+        }
+
+        .video-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .tapping-image {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .instruction-text {
+            text-align: center;
+            color: white;
+            margin: 15px 0;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Onder Neus</h1>
+            
+            <div class="video-container">
+                <img src="../avatar/onder-neus.jpg" alt="Onder neus" class="tapping-image">
+            </div>
+
+            <div class="instruction-text">
+                Klop op het onder neus punt en lees hardop mee
+            </div>
+
+            <div class="affirmation" id="affirmation">
+                "Ik voel mij <span id="emotionAffirmation"></span>"
+            </div>
+
+            <div class="button-container">
+                <button class="control-button" id="startButton">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="control-button" id="pauseButton" style="display: none;">
+                    <i class="fas fa-pause"></i>
+                </button>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" onclick="window.location.href='../eft-tapping.html'">
+                    <i class="fas fa-home"></i>
+                    <span>Terug naar start</span>
+                </button>
+                <button class="nav-button" onclick="window.location.href='kloppunt-kin.html'">
+                    <i class="fas fa-forward"></i>
+                    <span>Volgend kloppunt</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isSessionActive = false;
+        let isPaused = false;
+        let speech = null;
+
+        // Laad opgeslagen gegevens
+        const emotion = localStorage.getItem('eftEmotion') || 'deze emotie';
+        
+        document.getElementById('emotionAffirmation').textContent = emotion;
+
+        // Spraak setup met hogere vrouwelijke stem
+        let voicesLoaded = false;
+        let selectedVoice = null;
+
+        function setupVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) return;
+            
+            selectedVoice = voices.find(v => v.name.includes('Colette') && v.lang === 'nl-NL');
+            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Hanna') && v.lang === 'nl-NL');
+            if (!selectedVoice) selectedVoice = voices.find(v => v.name === 'Google Nederlands' && v.lang === 'nl-NL');
+            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-A'));
+            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-C'));
+            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Claire') && v.lang === 'nl-NL');
+            
+            if (!selectedVoice) {
+                const dutchVoices = voices.filter(v => v.lang === 'nl-NL' && !v.name.includes('Frank') && !v.name.includes('Xander'));
+                selectedVoice = dutchVoices[0];
+            }
+            
+            if (selectedVoice) voicesLoaded = true;
+        }
+
+        if (window.speechSynthesis) {
+            setupVoice();
+            window.speechSynthesis.onvoiceschanged = setupVoice;
+        }
+
+        // Tekst uitspreken
+        function speakAffirmation() {
+            if (!window.speechSynthesis || !selectedVoice) return;
+            
+            window.speechSynthesis.cancel();
+            
+            setTimeout(() => {
+                const affirmationText = document.getElementById('affirmation').textContent;
+                const utterance = new SpeechSynthesisUtterance(affirmationText);
+                utterance.lang = 'nl-NL';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.2;
+                utterance.volume = 0.9;
+                utterance.voice = selectedVoice;
+                
+                utterance.onend = function() {
+                    // Automatisch verder na afloop
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            }, 50);
+        }
+
+        // Start sessie
+        document.getElementById('startButton').addEventListener('click', () => {
+            isSessionActive = true;
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('pauseButton').style.display = 'block';
+            speakAffirmation();
+        });
+
+        // Pauzeer sessie
+        document.getElementById('pauseButton').addEventListener('click', () => {
+            isPaused = !isPaused;
+            if (isPaused) {
+                window.speechSynthesis.pause();
+                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                window.speechSynthesis.resume();
+                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        });
+    </script>
+</body>
+</html> 

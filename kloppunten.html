@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kloppunten - EFT met Paula</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4d6a66;
+            --secondary-color: #4d6a66;
+            --text-color: #2c3e50;
+            --accent-color: #4d6a66;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px;
+        }
+
+        .header-image {
+            max-width: 300px;
+            height: auto;
+            text-decoration: none;
+            border: none;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .content-box {
+            background: var(--primary-color);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .content-box h2 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .content-box p {
+            margin-bottom: 20px;
+        }
+
+        .tapping-point {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tapping-point-content {
+            flex: 1;
+        }
+
+        .tapping-image {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid white;
+        }
+
+        .tapping-point h3 {
+            color: white;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .tapping-point h3::before {
+            content: "•";
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .nav-button.disabled:hover {
+            transform: none;
+        }
+    </style>
+</head>
+<body style="background-color: #4d6a66; margin: 0; padding: 0;">
+    <div class="container">
+        <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" class="header-image">
+        
+        <div class="content-box">
+            <h2>De kloppunten</h2>
+            <p>Bij EFT kloppen we op specifieke acupressuurpunten. Hieronder vind je een overzicht van alle kloppunten en hoe je ze kunt vinden.</p>
+            <p>Bij bijna alle kloppunten tik je met twee vingers (het makkelijkste is je middelvinger en je wijsvinger). Behalve bij de kruin op je hoofd. Daar klopt je met je platte hand. Per kloppunt klop ongeveer 7 keer. Je hoeft niet hard te kloppen, zacht tikken is voldoende.</p>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Karatepunt</h3>
+                    <p>De zijkant van je hand, tussen je pink en pols. Dit is het punt waar je met je hand zou slaan in karate.</p>
+                </div>
+                <img src="avatar/karatepunt.jpg" alt="Karatepunt" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Kruin van het hoofd</h3>
+                    <p>Bovenaan je hoofd, precies in het midden. Je kunt dit punt vinden door met je vingers vanaf je voorhoofd naar achteren te voelen tot je het hoogste punt bereikt. Je klopt hier met de volledige platte hand.</p>
+                </div>
+                <img src="avatar/kruin.jpg" alt="Kruin van het hoofd" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Wenkbrauw</h3>
+                    <p>De binnenkant van je wenkbrauw, waar deze begint bij je neus. Dit punt bevindt zich net boven de binnenste ooghoek.</p>
+                </div>
+                <img src="avatar/wenkbrauw.jpg" alt="Wenkbrauw punt" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Zijkant van het oog</h3>
+                    <p>Op het bot aan de buitenkant van je oog.</p>
+                </div>
+                <img src="avatar/zijkant-oog.jpg" alt="Zijkant van het oog" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Onder het oog</h3>
+                    <p>Op het bot onder je oog.</p>
+                </div>
+                <img src="avatar/onder-oog.jpg" alt="Onder het oog" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Onder de neus</h3>
+                    <p>Het punt tussen je neus en bovenlip, in de groef onder je neus.</p>
+                </div>
+                <img src="avatar/onder-neus.jpg" alt="Onder de neus" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Kin</h3>
+                    <p>Het midden van je kin, tussen je onderlip en de punt van je kin.</p>
+                </div>
+                <img src="avatar/kin.jpg" alt="Kin punt" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Sleutelbeen</h3>
+                    <p>Voel je sleutelbeen en ga naar het uiteinde aan de kant van het middel van je lichaam. Vanaf daar 2 cm schuin naar beneden en naar buiten, waar je een kuiltje voelt.</p>
+                </div>
+                <img src="avatar/sleutelbeen.jpg" alt="Sleutelbeen punt" class="tapping-image">
+            </div>
+
+            <div class="tapping-point">
+                <div class="tapping-point-content">
+                    <h3>Onder de arm</h3>
+                    <p>Ongeveer 10 cm onder je oksel, te hoogte (voor de dames) van je BH band, aan de zijkant van je lichaam.</p>
+                </div>
+                <img src="avatar/onder-arm.jpg" alt="Onder de arm" class="tapping-image">
+            </div>
+        </div>
+    </div>
+    <div class="navigation-bar">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+</body>
+</html> 

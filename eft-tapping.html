@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFT Tapping - EFT met Paula</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4d6a66;
+            --secondary-color: #4d6a66;
+            --text-color: #2c3e50;
+            --accent-color: #4d6a66;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px; /* Ruimte voor de navigatiebalk */
+        }
+
+        .header-image {
+            max-width: 200px;
+            height: auto;
+            text-decoration: none;
+            border: none;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .card {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            padding: 20px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+        .form-group label {
+            margin-bottom: 0;
+            margin-right: 0.5em;
+            color: white;
+            font-weight: 600;
+        }
+        .form-group input[type="text"] {
+            flex: 1;
+        }
+
+        input[type="text"],
+        input[type="range"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: white;
+        }
+
+        input[type="text"]::placeholder {
+            color: white;
+            font-style: italic;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 20px;
+            background: linear-gradient(to right, #4CAF50, #FF0000);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .suds-container {
+            text-align: center;
+            margin: 20px 0;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .suds-value {
+            font-size: 1em;
+            color: white;
+            font-weight: bold;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(77, 106, 102, 0.15);
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .nav-button.disabled:hover {
+            transform: none;
+        }
+    </style>
+</head>
+<body style="background-color: #4d6a66; margin: 0; padding: 0;">
+    <div class="container">
+        <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" class="header-image">
+        
+        <div class="card">
+            <h1>Starten met EFT</h1>
+            
+            <div class="intro">
+                <p>Laten we samen beginnen met EFT! Vul hieronder in wat je op dit moment voelt en ervaart. 
+                   Door deze persoonlijke sessie te volgen, help je jezelf om emotionele spanning los te laten 
+                   en meer innerlijke rust te vinden.</p>
+            </div>
+
+            <form id="eftForm">
+                <div class="form-group">
+                    <label for="emotion">Ik voel me:</label>
+                    <input type="text" id="emotion" name="emotion" placeholder="bijv. angstig, verdrietig, boos" required title="bijvoorbeeld: angstig, verdrietig, boos, gestresst, onzeker">
+                </div>
+
+                <div class="form-group">
+                    <label for="situation">Omdat:</label>
+                    <input type="text" id="situation" name="situation" placeholder="bijv. ik me zorgen maak over..." required title="bijvoorbeeld: ik me zorgen maak over mijn werk, ik een drukke dag heb, er iets mis is gegaan">
+                </div>
+
+                <div class="form-group" style="display: block; text-align: center;">
+                    <label for="suds" style="display: block; margin-bottom: 10px;">Hoe intens voel je de emotie op dit moment?</label>
+                    <div class="suds-container">
+                        <input type="range" id="suds" name="suds" min="0" max="10" value="5">
+                        <div class="suds-value">5</div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="startTapping()">Start EFT Sessie</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="navigation-bar">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="avatar/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 25px; height: 25px; object-fit: contain;">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+
+    <script>
+        // Update SUDS waarde wanneer de slider beweegt
+        document.getElementById('suds').addEventListener('input', function(e) {
+            document.querySelector('.suds-value').textContent = e.target.value;
+        });
+
+        function startTapping() {
+            const emotion = document.getElementById('emotion').value.toLowerCase();
+            let situation = document.getElementById('situation').value.toLowerCase();
+            const sudsValue = document.getElementById('suds').value;
+
+            // Verwijder het woord 'omdat' als het al in de input staat
+            situation = situation.replace(/^omdat\s+/i, '');
+
+            if (!emotion || !situation) {
+                alert('Vul alstublieft beide velden in om te beginnen.');
+                return;
+            }
+
+            // Sla de waarden op voor gebruik in de volgende pagina
+            localStorage.setItem('eftEmotion', emotion);
+            localStorage.setItem('eftSituation', situation);
+            localStorage.setItem('eftSuds', sudsValue);
+
+            // Navigeer naar het karate punt
+            window.location.href = 'kloppunten/kloppunt-karatepunt.html';
+        }
+    </script>
+</body>
+</html>

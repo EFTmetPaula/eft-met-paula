@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Extra hulp en professionele begeleiding bij EFT (Emotional Freedom Techniques) met Paula Sangers, gecertificeerd EFT Practitioner en coach.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Extra Hulp - EFT met Paula">
+    <meta property="og:description" content="Professionele begeleiding bij EFT met Paula Sangers, gecertificeerd EFT Practitioner en coach.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.paulasangers.nl/app">
+    <link rel="icon" type="image/png" href="logo/favicon.png">
+    <title>Extra Hulp - EFT met Paula</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #3d5a55;  /* Donkerder groen voor beter contrast */
+            --secondary-color: #3d5a55;
+            --text-color: #1a2c28;     /* Donkerder tekst voor beter contrast */
+            --accent-color: #3d5a55;
+            --hover-color: #2c423e;    /* Nog donkerder voor hover states */
+            --support-section-bg: rgba(255, 255, 255, 0.05);
+            --main-section-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-bottom: 80px; /* Ruimte voor de navigatiebalk */
+        }
+
+        .card {
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(77, 106, 102, 0.1);
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        h1, h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+        }
+
+        .help-section {
+            background: var(--main-section-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .help-section.support-section {
+            background: var(--support-section-bg);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .help-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .help-section h2 {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .help-section p {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .tip-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tip-list li {
+            color: white;
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .tip-list li:before {
+            content: "•";
+            color: white;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button:focus {
+            outline: 3px solid rgba(255, 255, 255, 0.5);
+            outline-offset: 2px;
+        }
+
+        .action-button:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .action-button:hover::after {
+            transform: translateX(100%);
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            aria-label: "Hoofdnavigatie";
+        }
+
+        .nav-button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            background: var(--hover-color);
+            color: white;
+        }
+
+        .nav-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .nav-button:hover::after {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 20px auto;
+            }
+
+            .action-button {
+                padding: 12px 20px; /* Kleinere padding op mobiel */
+                width: auto; /* Verwijder full width */
+                min-width: 120px; /* Minimum breedte voor touch target */
+                max-width: 200px; /* Maximum breedte op mobiel */
+                text-align: center;
+                margin: 5px 0;
+                font-size: 0.95em; /* Iets kleinere tekst */
+            }
+
+            .button-container {
+                flex-direction: row; /* Buttons naast elkaar */
+                flex-wrap: wrap; /* Wrap als er te weinig ruimte is */
+                gap: 10px;
+                justify-content: center; /* Centreer de buttons */
+            }
+
+            .help-section {
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+
+        /* Extra kleine schermen */
+        @media (max-width: 480px) {
+            .action-button {
+                padding: 10px 15px; /* Nog kleinere padding */
+                min-width: 100px; /* Nog smaller op zeer kleine schermen */
+                font-size: 0.9em; /* Nog iets kleinere tekst */
+            }
+
+            .button-container {
+                gap: 8px; /* Kleinere ruimte tussen buttons */
+            }
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .help-section[role="region"] {
+            /* Verwijder ongeldige aria-label CSS */
+        }
+
+        *:focus-visible {
+            outline: 3px solid rgba(255, 255, 255, 0.5);
+            outline-offset: 2px;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .progress-bar.active {
+            transform: scaleX(1);
+        }
+    </style>
+</head>
+<body style="background-color: #3d5a55; margin: 0; padding: 0;">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="container">
+        <div class="card">
+            <h1>Extra Hulp</h1>
+
+            <div class="help-section support-section" role="region" aria-label="Tips voor het beste resultaat">
+                <h2>Tips voor het beste resultaat</h2>
+                <ul class="tip-list">
+                    <li>Herhaal de oefening meerdere keren. Het is normaal dat de spanning niet direct helemaal weg is.</li>
+                    <li>Je kunt dezelfde woorden gebruiken of ze aanpassen aan wat je nu voelt.</li>
+                    <li>Wees geduldig met jezelf. Elke stap vooruit is een goede stap.</li>
+                </ul>
+            </div>
+
+            <div class="help-section support-section" role="region" aria-label="Wat als het niet werkt">
+                <h2>Wat als het niet werkt?</h2>
+                <ul class="tip-list">
+                    <li>Probeer de woorden aan te passen aan wat je precies voelt.</li>
+                    <li>Herhaal de oefening een paar keer met dezelfde woorden.</li>
+                </ul>
+            </div>
+
+            <div class="help-section" role="region" aria-label="Professionele hulp informatie">
+                <h2>Meer hulp nodig? Je staat er niet alleen voor.</h2>
+                <p>EFT is een krachtige zelfhulpmethode, maar soms is extra begeleiding helpend. Bijvoorbeeld:</p>
+                <ul class="tip-list">
+                    <li>Als spanning blijft of steeds terugkomt</li>
+                    <li>Bij angst, somberheid of overweldigende emoties</li>
+                    <li>Als je dagelijks leven eronder lijdt</li>
+                    <li>Of als je voelt: ik wil hier niet alleen mee blijven worstelen</li>
+                </ul>
+            </div>
+
+            <div class="help-section" role="region" aria-label="Wie ben ik sectie">
+                <h2>Wie ben ik?</h2>
+                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 0 0 200px;">
+                        <a href="https://www.paulasangers.nl" style="text-decoration: none;">
+                            <img src="logo/logo-website.png" alt="Paula Sangers - EFT Coach" style="max-width: 100%; height: auto;">
+                        </a>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <p>Ik ben Paula Sangers, gecertificeerd EFT Practitioner en coach. Al meer dan 12 jaar werk ik in de zorg, waar ik mensen begeleid met uitdagingen waar ze in het dagelijks leven mee te maken krijgen. In mijn praktijk help ik je om spanning, stress en vastzittende emoties los te laten. Dat doe ik met aandacht, rust en zonder oordeel, zodat jij weer grip krijgt op wat er speelt.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h2>Wat ik voor je kan betekenen:</h2>
+                <ul class="tip-list">
+                    <li><strong>Persoonlijk coachingtraject</strong> – met de 1-op-1 sessies gaan we samen gericht werken aan de problemen waar jij tegenaan loopt. Dit doen we door middel van verdiepende EFT-oefeningen, afgestemd op jouw situatie.</li>
+                </ul>
+                <div class="button-container" style="margin-top: 15px;">
+                    <a href="https://www.paulasangers.nl/coaching" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-user-friends"></i>
+                        Meer over coaching
+                    </a>
+                </div>
+                
+                <ul class="tip-list" style="margin-top: 25px;">
+                    <li><strong>EFT-workshop</strong> – een laagdrempelige en praktische manier om de basis van EFT onder de knie te krijgen, zodat je het zelf kunt toepassen bij stress, spanning of emoties.</li>
+                </ul>
+                <div class="button-container" style="margin-top: 15px;">
+                    <a href="https://www.paulasangers.nl/workshop" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        Meer over de workshop
+                    </a>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h2>Laten we samen aan de slag gaan</h2>
+                <p>Wil je meer weten over mijn aanpak of heb je een vraag? Ik denk graag met je mee over wat voor jou de beste volgende stap is. Neem gerust contact op voor een vrijblijvend gesprek.</p>
+                
+                <div class="button-container" style="flex-wrap: wrap; gap: 15px;">
+                    <a href="https://wa.me/316224009995?text=Hoi%20Paula%2C%20ik%20heb%20een%20vraag%20over%20EFT%20coaching" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </a>
+                    <a href="tel:06224009995" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-phone"></i>
+                        Bellen
+                    </a>
+                    <a href="mailto:info@paulasangers.nl?subject=Vraag%20over%20EFT%20coaching" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-envelope"></i>
+                        E-mail
+                    </a>
+                </div>
+
+                <p style="margin-top: 30px; text-align: center;">Meer informatie over mijn werkwijze, handige tips en leuke weetjes:</p>
+                
+                <div class="button-container" style="flex-wrap: wrap; gap: 15px;">
+                    <a href="https://www.paulasangers.nl" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fas fa-globe"></i>
+                        Website
+                    </a>
+                    <a href="https://www.instagram.com/coachbijspanningenstress.eft" class="action-button" style="background-color: white; color: #3d5a55; border: 2px solid #3d5a55; box-shadow: 0 2px 8px rgba(61, 90, 85, 0.15);">
+                        <i class="fab fa-instagram"></i>
+                        Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navigation-bar" role="navigation" aria-label="Hoofdnavigatie">
+        <a href="index.html" class="nav-button" title="Home">
+            <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
+        </a>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
+            <i class="fas fa-hand-point-up"></i>
+        </a>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
+            <i class="fas fa-play-circle"></i>
+        </a>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
+    <script>
+        // Voortgangsindicator met error handling
+        const progressBar = document.getElementById('progressBar');
+        if (progressBar) {
+            let progress = 0;
+            
+            function updateProgress() {
+                if (progress <= 1) {
+                    progress += 0.1;
+                    progressBar.style.transform = `scaleX(${progress})`;
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+            
+            window.addEventListener('load', () => {
+                if (progressBar) {
+                    progressBar.classList.add('active');
+                    updateProgress();
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
