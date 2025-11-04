@@ -112,14 +112,8 @@ function formatSituation(situation) {
     // Verwijder punten en komma's aan het einde
     formatted = formatted.replace(/[.,!?]+$/, '');
     
-    // Grammaticale correcties
-    const corrections = {
-        // Lidwoorden toevoegen
-        'werkdag': 'een drukke werkdag',
-        'moeilijke dag': 'een moeilijke dag',
-        'zware dag': 'een zware dag',
-        'stressvolle dag': 'een stressvolle dag',
-        
+    // Grammaticale correcties - eenvoudig woord-voor-woord
+    const simpleCorrections = {
         // 'Er' toevoegen waar nodig
         'iets mis is gegaan': 'er iets mis is gegaan',
         'iets mis gaat': 'er iets mis gaat',
@@ -130,7 +124,6 @@ function formatSituation(situation) {
         // Werkwoordsvormen corrigeren
         'gestreste': 'gestresde',
         'gespannene': 'gespannen',
-        'verdrietige': 'verdrietige',
         
         // Woordvolgorde
         'weer er': 'er weer',
@@ -138,9 +131,25 @@ function formatSituation(situation) {
         'altijd er': 'er altijd'
     };
     
-    for (const [wrong, correct] of Object.entries(corrections)) {
+    for (const [wrong, correct] of Object.entries(simpleCorrections)) {
         const regex = new RegExp(wrong, 'gi');
         formatted = formatted.replace(regex, correct);
+    }
+    
+    // Speciale gevallen voor volledige zinnen met werkwoord
+    const situationPatterns = [
+        { pattern: /^(een\s+)?(drukke\s+|zware\s+|moeilijke\s+|stressvolle\s+)?werkdag$/i, transform: (match) => `ik een drukke werkdag heb` },
+        { pattern: /^(een\s+)?(moeilijke|zware|stressvolle)\s+dag$/i, transform: (match) => `ik een ${match.replace(/^een\s+/i, '')} heb` },
+        { pattern: /^werkdag$/i, transform: () => `ik een drukke werkdag heb` },
+        { pattern: /^(ruzie|conflict)(\s+met\s+.+)?$/i, transform: (match) => `ik ${match} heb` },
+        { pattern: /^(hoofdpijn|pijn|klachten)$/i, transform: (match) => `ik ${match} heb` }
+    ];
+    
+    for (const {pattern, transform} of situationPatterns) {
+        if (pattern.test(formatted)) {
+            formatted = transform(formatted);
+            break;
+        }
     }
     
     // Als de zin niet met een persoonlijk voornaamwoord begint, voeg context toe
@@ -153,11 +162,14 @@ function formatSituation(situation) {
         if (startsWithVerb) {
             formatted = 'ik ' + formatted;
         } else {
-            // Als het een zelfstandig naamwoord is, check of er een lidwoord nodig is
-            const needsArticle = !/^(een|de|het|deze|dit) /i.test(formatted);
-            if (needsArticle && !formatted.includes(' ')) {
-                // Enkele woord zonder lidwoord - voeg context toe
-                formatted = 'het gaat om ' + formatted;
+            // Als het begint met een lidwoord, voeg "ik" en werkwoord toe
+            if (/^(een|de|het)\s+/i.test(formatted)) {
+                // Probeer een passend werkwoord te vinden
+                if (formatted.includes('dag') || formatted.includes('moment') || formatted.includes('tijd')) {
+                    formatted = 'ik ' + formatted + ' heb';
+                } else {
+                    formatted = 'het gaat om ' + formatted;
+                }
             }
         }
     }
