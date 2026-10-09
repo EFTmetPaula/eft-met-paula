@@ -317,14 +317,14 @@
             }, 50);
         }
         // Pauzeer sessie
-        document.getElementById('pauseButton').addEventListener('click', () => {
+        document.getElementById('pausePlayButton').addEventListener('click', () => {
             isPaused = !isPaused;
             if (isPaused) {
                 window.speechSynthesis.pause();
-                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-play"></i>';
+                document.getElementById('pausePlayButton').innerHTML = '<i class="fas fa-play"></i>';
             } else {
                 window.speechSynthesis.resume();
-                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-pause"></i>';
+                document.getElementById('pausePlayButton').innerHTML = '<i class="fas fa-pause"></i>';
             }
         });
     </script>

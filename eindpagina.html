@@ -127,6 +127,13 @@
             display: none;
         }
 
+        .comparison-text {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 0 10px;
+        }
+
         .button-container {
             display: flex;
             justify-content: center;
@@ -286,10 +293,12 @@
             </div>
 
             <div class="result-container" id="resultContainer">
+                <p class="comparison-text" id="comparisonText" style="display: none;"></p>
                 <div id="resultText"></div>
                 <div class="button-container">
                     <button class="action-button" id="restartButton" style="display: none;" onclick="window.location.href='eft-tapping.html'">Herstart Oefening</button>
                     <button class="action-button" id="newExerciseButton" style="display: none;">Nieuwe Oefening</button>
+                    <button class="action-button" id="homeButton" style="display: none;"><i class="fas fa-home"></i> Terug naar home</button>
                 </div>
             </div>
 
@@ -358,95 +367,95 @@
         const intensitySlider = document.getElementById('intensitySlider');
         const meterValue = document.getElementById('meterValue');
         const resultContainer = document.getElementById('resultContainer');
+        const comparisonText = document.getElementById('comparisonText');
         const resultText = document.getElementById('resultText');
         const restartButton = document.getElementById('restartButton');
         const newExerciseButton = document.getElementById('newExerciseButton');
+        const homeButton = document.getElementById('homeButton');
 
-        // Laad de beginintensiteit
-        const startIntensity = localStorage.getItem('startIntensity') || 0;
+        // Laad de beginintensiteit (opgeslagen op de startpagina als 'eftSuds')
+        const savedStart = localStorage.getItem('eftSuds');
+        const startIntensity = savedStart !== null && savedStart !== '' ? parseInt(savedStart, 10) : null;
 
-        // Update meter waarde wanneer de slider beweegt
+        // Teksten per score (0 = helemaal geen spanning meer, 10 = maximaal)
+        const resultMessages = {
+            0: { title: 'Gefeliciteerd! 🎉', text: 'Wat fijn dat de spanning volledig over is. Je hebt de oefening succesvol afgerond.' },
+            1: { title: 'Bijna daar! 🌟', text: 'Je voelt nog een beetje spanning. Vaak is het nodig om de oefening een paar keer te herhalen voor de spanning volledig is weggezakt. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.' },
+            2: { title: 'Goed bezig! 🌱', text: 'De spanning is al flink verminderd. Het is heel normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.' },
+            3: { title: 'Mooie vooruitgang! 🌈', text: 'Je bent al een heel eind op weg. Bij EFT is het normaal om de oefening een paar keer te herhalen voor het beste resultaat. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.' },
+            4: { title: 'Je bent op de goede weg! 🌟', text: 'De spanning is al wat minder. Door de oefening te herhalen, geef je jezelf de tijd om de spanning volledig los te laten. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.' },
+            5: { title: 'Je kunt dit! 💪', text: 'De spanning is nog aanwezig. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.' },
+            6: { title: 'Blijf bij jezelf 🌟', text: 'De spanning is nog sterk. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.' },
+            7: { title: 'Neem je tijd ⏳', text: 'De spanning is nog hoog. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.' },
+            8: { title: 'Vertrouw op jezelf 🌱', text: 'De spanning is nog erg aanwezig. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.' },
+            9: { title: 'Je bent sterker dan je denkt 💫', text: 'De spanning is nog heel sterk. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.' },
+            10: { title: 'Elke stap telt 🌈', text: 'De spanning is nog maximaal. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.' }
+        };
+
+        // Vergelijking voor en na: "Van 7 naar 3"
+        function comparisonFor(value) {
+            if (startIntensity === null || isNaN(startIntensity)) return '';
+            const difference = startIntensity - value;
+            let summary;
+            if (difference > 0) {
+                summary = difference === 1 ? '1 punt minder spanning' : `${difference} punten minder spanning`;
+            } else if (difference < 0) {
+                summary = 'de spanning is wat hoger dan bij de start';
+            } else {
+                summary = 'de spanning is gelijk gebleven';
+            }
+            return `Van ${startIntensity} naar ${value}: ${summary}.`;
+        }
+
+        function showResult(value) {
+            const message = resultMessages[value];
+            if (!message) return;
+
+            comparisonText.textContent = comparisonFor(value);
+            comparisonText.style.display = comparisonText.textContent ? 'block' : 'none';
+
+            resultText.innerHTML = '';
+            const title = document.createElement('h2');
+            title.textContent = message.title;
+            const text = document.createElement('p');
+            text.textContent = message.text;
+            resultText.appendChild(title);
+            resultText.appendChild(text);
+
+            // Bij 0: terug naar home of nieuwe oefening. Anders: herhalen of nieuwe oefening.
+            homeButton.style.display = value === 0 ? 'block' : 'none';
+            restartButton.style.display = value === 0 ? 'none' : 'block';
+            newExerciseButton.style.display = 'block';
+
+            resultContainer.style.display = 'block';
+        }
+
+        // Toon het resultaat pas als de schuif even stilstaat (voorkomt flikkeren)
+        let resultTimer = null;
         intensitySlider.addEventListener('input', function(e) {
-            meterValue.textContent = e.target.value;
-            
-            // Toon resultaat na 2 seconden
-            setTimeout(() => {
-                resultContainer.style.display = 'block';
-                
-                if (e.target.value == 0) {
-                    resultText.innerHTML = `
-                        <h2>Gefeliciteerd! 🎉</h2>
-                        <p>Wat fijn dat de spanning volledig over is. Je hebt de oefening succesvol afgerond.</p>
-                        <div class="button-container">
-                            <button class="action-button" onclick="window.location.href='eft-tapping.html'">
-                                <i class="fas fa-home"></i>
-                                Terug naar home
-                            </button>
-                            <button class="action-button" id="newExerciseButton">Nieuwe Oefening</button>
-                        </div>
-                    `;
-                } else if (e.target.value == 1) {
-                    resultText.innerHTML = `
-                        <h2>Bijna daar! 🌟</h2>
-                        <p>Je voelt nog een beetje spanning. Vaak is het nodig om de oefening een paar keer te herhalen voor de spanning volledig is weggezakt. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 2) {
-                    resultText.innerHTML = `
-                        <h2>Goed bezig! 🌱</h2>
-                        <p>De spanning is al flink verminderd. Het is heel normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 3) {
-                    resultText.innerHTML = `
-                        <h2>Mooie vooruitgang! 🌈</h2>
-                        <p>Je bent al een heel eind op weg. Bij EFT is het normaal om de oefening een paar keer te herhalen voor het beste resultaat. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 4) {
-                    resultText.innerHTML = `
-                        <h2>Je bent op de goede weg! 🌟</h2>
-                        <p>De spanning is al wat minder. Door de oefening te herhalen, geef je jezelf de tijd om de spanning volledig los te laten. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 5) {
-                    resultText.innerHTML = `
-                        <h2>Je kunt dit! 💪</h2>
-                        <p>De spanning is nog aanwezig. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 6) {
-                    resultText.innerHTML = `
-                        <h2>Blijf bij jezelf 🌟</h2>
-                        <p>De spanning is nog sterk. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 7) {
-                    resultText.innerHTML = `
-                        <h2>Neem je tijd ⏳</h2>
-                        <p>De spanning is nog hoog. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 8) {
-                    resultText.innerHTML = `
-                        <h2>Vertrouw op jezelf 🌱</h2>
-                        <p>De spanning is nog erg aanwezig. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 9) {
-                    resultText.innerHTML = `
-                        <h2>Je bent sterker dan je denkt 💫</h2>
-                        <p>De spanning is nog heel sterk. Bij EFT is het normaal om de oefening meerdere keren te doen. Je kunt kiezen: dezelfde woorden herhalen of ze aanpassen aan wat je nu voelt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                } else if (e.target.value == 10) {
-                    resultText.innerHTML = `
-                        <h2>Elke stap telt 🌈</h2>
-                        <p>De spanning is nog maximaal. Het is heel normaal om de oefening een paar keer te herhalen. Je kunt dezelfde woorden gebruiken of ze aanpassen, wat voor jou het beste werkt.</p>
-                    `;
-                    restartButton.style.display = 'block';
-                }
-            }, 2000);
+            const value = parseInt(e.target.value, 10);
+            meterValue.textContent = value;
+            clearTimeout(resultTimer);
+            resultTimer = setTimeout(() => showResult(value), 600);
+        });
+
+        // Bij loslaten van de schuif direct tonen
+        intensitySlider.addEventListener('change', function(e) {
+            clearTimeout(resultTimer);
+            showResult(parseInt(e.target.value, 10));
+        });
+
+        // Nieuwe oefening: vorige invoer wissen en opnieuw beginnen
+        newExerciseButton.addEventListener('click', () => {
+            localStorage.removeItem('eftEmotion');
+            localStorage.removeItem('eftSituation');
+            localStorage.removeItem('eftSuds');
+            window.location.href = 'eft-tapping.html';
+        });
+
+        // Terug naar home
+        homeButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
         });
     </script>
 </body>

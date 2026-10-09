@@ -376,18 +376,6 @@
             }, 50);
         }
 
-        // Pauzeer sessie
-        document.getElementById('pauseButton').addEventListener('click', () => {
-            isPaused = !isPaused;
-            if (isPaused) {
-                window.speechSynthesis.pause();
-                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                window.speechSynthesis.resume();
-                document.getElementById('pauseButton').innerHTML = '<i class="fas fa-pause"></i>';
-            }
-        });
-
         // Pauze/Play functionaliteit voor de nieuwe knop
         const pausePlayButton = document.getElementById('pausePlayButton');
         pausePlayButton.addEventListener('click', () => {
