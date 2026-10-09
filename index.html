@@ -97,6 +97,12 @@
             color: white;
         }
 
+        .intro h1 {
+            color: #9bc7c1;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
         .intro h2 {
             color: #9bc7c1;
             margin-bottom: 15px;
@@ -285,6 +291,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="EFT Paula">
     <script src="/pwa.js" defer></script>
+    <link rel="stylesheet" href="/a11y.css">
 </head>
 <body style="background-color: #3d5a55; margin: 0; padding: 0;">
     
@@ -315,7 +322,7 @@
     <div class="container">
         <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula logo" class="header-image pulse" loading="lazy">
         <div class="intro">
-            <h2>Welkom bij EFT met Paula</h2>
+            <h1>Welkom bij EFT met Paula</h1>
             <p>Ontdek de kracht van EFT (Emotional Freedom Techniques) en leer hoe je zelf emotionele en fysieke spanning kunt verminderen. Deze app begeleidt je stap voor stap door de EFT-techniek, zodat je direct aan de slag kunt.</p>
             
             <p>Ontdek hoe je zelf spanning kunt verminderen.</p>
@@ -358,20 +365,20 @@
         </div>
     </div>
     <div class="navigation-bar">
-        <a href="index.html" class="nav-button" title="Home">
+        <a href="index.html" class="nav-button" title="Home" aria-label="Home">
             <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 30px; height: 30px; object-fit: contain;">
         </a>
-        <a href="wat-is-eft.html" class="nav-button">
-            <i class="fas fa-info-circle"></i>
+        <a href="wat-is-eft.html" class="nav-button" aria-label="Wat is EFT?">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
         </a>
-        <a href="kloppunten.html" class="nav-button">
-            <i class="fas fa-hand-point-up"></i>
+        <a href="kloppunten.html" class="nav-button" aria-label="Kloppunten">
+            <i class="fas fa-hand-point-up" aria-hidden="true"></i>
         </a>
-        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
-            <i class="fas fa-play-circle"></i>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT" aria-label="Start EFT">
+            <i class="fas fa-play-circle" aria-hidden="true"></i>
         </a>
-        <a href="extra-hulp.html" class="nav-button">
-            <i class="fas fa-question-circle"></i>
+        <a href="extra-hulp.html" class="nav-button" aria-label="Extra hulp">
+            <i class="fas fa-question-circle" aria-hidden="true"></i>
         </a>
     </div>
     <script>

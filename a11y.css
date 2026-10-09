@@ -1,0 +1,69 @@
+/* Toegankelijkheid: gedeeld door alle pagina's (na de pagina-stijlen geladen) */
+
+/* Zichtbare focusrand bij toetsenbordbediening, in huisstijl:
+   witte rand met donkergroene buitenrand, zichtbaar op groen en op wit */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid #ffffff !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 6px #1a2c28 !important;
+}
+
+/* Placeholder duidelijk lichter en schuin, typed tekst wit en recht */
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-style: italic !important;
+    opacity: 1;
+}
+input[type="text"],
+textarea {
+    font-style: normal;
+}
+
+/* Labels onder de schuifbalk */
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: #ffffff;
+}
+
+/* Uitleg bij menu-items: ook bij focus, en op aanraakschermen altijd zichtbaar */
+.tooltip:focus-visible .tooltip-text,
+.tooltip:focus-within .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+@media (hover: none) {
+    .tooltip .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+        position: static;
+        transform: none;
+        width: auto;
+        display: block;
+        background: none;
+        padding: 0;
+        margin-top: 6px;
+        font-size: 0.9em;
+    }
+    .tooltip .tooltip-text::after {
+        display: none;
+    }
+}
+
+/* Alleen voor schermlezers */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0);
+    white-space: nowrap; border: 0;
+}

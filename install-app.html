@@ -239,14 +239,15 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="EFT Paula">
     <script src="/pwa.js" defer></script>
+    <link rel="stylesheet" href="/a11y.css">
 </head>
 <body style="background-color: #3d5a55; margin: 0; padding: 0;">
     <div class="container">
         <div class="card">
-            <h1><i class="fas fa-download"></i> Installeer de EFT-app</h1>
+            <h1><i class="fas fa-download" aria-hidden="true"></i> Installeer de EFT-app</h1>
             
             <div class="install-section">
-                <h3><i class="fas fa-mobile-alt device-icon"></i>iPhone (Safari)</h3>
+                <h3><i class="fas fa-mobile-alt device-icon" aria-hidden="true"></i>iPhone (Safari)</h3>
                 <ol class="install-steps">
                     <li>Open Safari en ga naar deze pagina</li>
                     <li>Tik op de deel-knop (vierkant met pijl omhoog)</li>
@@ -257,7 +258,7 @@
             </div>
 
             <div class="install-section">
-                <h3><i class="fab fa-android device-icon"></i>Android (Chrome)</h3>
+                <h3><i class="fab fa-android device-icon" aria-hidden="true"></i>Android (Chrome)</h3>
                 <ol class="install-steps">
                     <li>Open Chrome en ga naar deze pagina</li>
                     <li>Tik op het menu (drie puntjes rechtsboven)</li>
@@ -268,42 +269,42 @@
             </div>
 
             <div id="iosHint" class="install-section" hidden>
-                <h3><i class="fas fa-lightbulb device-icon"></i>Tip voor iPhone en iPad</h3>
+                <h3><i class="fas fa-lightbulb device-icon" aria-hidden="true"></i>Tip voor iPhone en iPad</h3>
                 <p style="color: white; margin: 0;">Tik onderin Safari op de deel-knop <i class="fas fa-arrow-up-from-bracket" aria-hidden="true"></i> en kies <strong>"Zet op beginscherm"</strong>. Zo staat EFT met Paula als app op je telefoon.</p>
             </div>
 
-            <p id="installedNote" hidden style="text-align: center; color: white;"><i class="fas fa-check-circle"></i> De app is al geïnstalleerd op dit apparaat.</p>
+            <p id="installedNote" hidden style="text-align: center; color: white;"><i class="fas fa-check-circle" aria-hidden="true"></i> De app is al geïnstalleerd op dit apparaat.</p>
 
             <div class="button-container">
                 <button type="button" id="installButton" class="action-button" hidden style="font-family: inherit;">
-                    <i class="fas fa-download"></i> Installeer de app
+                    <i class="fas fa-download" aria-hidden="true"></i> Installeer de app
                 </button>
                 <a href="index.html" class="action-button">
-                    <i class="fas fa-home"></i> Terug naar webversie
+                    <i class="fas fa-home" aria-hidden="true"></i> Terug naar webversie
                 </a>
             </div>
 
             <div style="text-align: center; margin-top: 30px; color: white; opacity: 0.8;">
-                <p><i class="fas fa-info-circle"></i> Heb je problemen met installeren? Neem contact op via e-mail: <a href="mailto:info@paulasangers.nl" style="color: white; text-decoration: underline;">info@paulasangers.nl</a></p>
+                <p><i class="fas fa-info-circle" aria-hidden="true"></i> Heb je problemen met installeren? Neem contact op via e-mail: <a href="mailto:info@paulasangers.nl" style="color: white; text-decoration: underline;">info@paulasangers.nl</a></p>
             </div>
         </div>
     </div>
 
     <div class="navigation-bar">
-        <a href="index.html" class="nav-button" title="Home">
+        <a href="index.html" class="nav-button" title="Home" aria-label="Home">
             <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" class="nav-logo">
         </a>
-        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
-            <i class="fas fa-info-circle"></i>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?" aria-label="Wat is EFT?">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
         </a>
-        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
-            <i class="fas fa-hand-point-up"></i>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten" aria-label="Kloppunten">
+            <i class="fas fa-hand-point-up" aria-hidden="true"></i>
         </a>
-        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
-            <i class="fas fa-play-circle"></i>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT" aria-label="Start EFT">
+            <i class="fas fa-play-circle" aria-hidden="true"></i>
         </a>
-        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
-            <i class="fas fa-question-circle"></i>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp" aria-label="Extra hulp">
+            <i class="fas fa-question-circle" aria-hidden="true"></i>
         </a>
     </div>
 

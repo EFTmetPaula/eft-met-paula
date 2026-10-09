@@ -227,6 +227,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="EFT Paula">
     <script src="/pwa.js" defer></script>
+    <link rel="stylesheet" href="/a11y.css">
 </head>
 <body style="background-color: #4d6a66; margin: 0; padding: 0;">
     <div class="container">
@@ -255,8 +256,9 @@
                 <div class="form-group" style="display: block; text-align: center;">
                     <label for="suds" style="display: block; margin-bottom: 10px;">Hoe intens voel je de emotie op dit moment?</label>
                     <div class="suds-container">
-                        <input type="range" id="suds" name="suds" min="0" max="10" value="5">
-                        <div class="suds-value">5</div>
+                        <input type="range" id="suds" name="suds" min="0" max="10" value="5" aria-valuetext="5 van 10">
+                        <div class="suds-value" aria-hidden="true">5</div>
+                        <div class="scale-labels" aria-hidden="true"><span>0 = geen spanning</span><span>10 = heel veel spanning</span></div>
                     </div>
                 </div>
 
@@ -267,20 +269,20 @@
     </div>
 
     <div class="navigation-bar">
-        <a href="index.html" class="nav-button" title="Home">
+        <a href="index.html" class="nav-button" title="Home" aria-label="Home">
             <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula" style="width: 25px; height: 25px; object-fit: contain;">
         </a>
-        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?">
-            <i class="fas fa-info-circle"></i>
+        <a href="wat-is-eft.html" class="nav-button" title="Wat is EFT?" aria-label="Wat is EFT?">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
         </a>
-        <a href="kloppunten.html" class="nav-button" title="Kloppunten">
-            <i class="fas fa-hand-point-up"></i>
+        <a href="kloppunten.html" class="nav-button" title="Kloppunten" aria-label="Kloppunten">
+            <i class="fas fa-hand-point-up" aria-hidden="true"></i>
         </a>
-        <a href="eft-tapping.html" class="nav-button" title="Start EFT">
-            <i class="fas fa-play-circle"></i>
+        <a href="eft-tapping.html" class="nav-button" title="Start EFT" aria-label="Start EFT">
+            <i class="fas fa-play-circle" aria-hidden="true"></i>
         </a>
-        <a href="extra-hulp.html" class="nav-button" title="Extra hulp">
-            <i class="fas fa-question-circle"></i>
+        <a href="extra-hulp.html" class="nav-button" title="Extra hulp" aria-label="Extra hulp">
+            <i class="fas fa-question-circle" aria-hidden="true"></i>
         </a>
     </div>
 
@@ -288,9 +290,12 @@
         // Oude versies bewaarden de invoer blijvend (localStorage): opruimen
         ['eftEmotion', 'eftSituation', 'eftSuds', 'startIntensity'].forEach(key => localStorage.removeItem(key));
 
+        function sudsText(v){v=Number(v);return v===0?'0, geen spanning':v===10?'10, heel veel spanning':v+' van 10';}
+
         // Update SUDS waarde wanneer de slider beweegt
         document.getElementById('suds').addEventListener('input', function(e) {
             document.querySelector('.suds-value').textContent = e.target.value;
+            e.target.setAttribute('aria-valuetext', sudsText(e.target.value));
         });
 
         function startTapping() {

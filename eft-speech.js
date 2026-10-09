@@ -120,7 +120,7 @@
 
         function setIcon(name, label) {
             if (!pauseButton) return;
-            pauseButton.innerHTML = '<i class="fas fa-' + name + '"></i>';
+            pauseButton.innerHTML = '<i class="fas fa-' + name + '" aria-hidden="true"></i>';
             pauseButton.setAttribute('aria-label', label);
             pauseButton.title = label;
         }

@@ -218,6 +218,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="EFT Paula">
     <script src="/pwa.js" defer></script>
+    <link rel="stylesheet" href="/a11y.css">
 </head>
 <body>
     <div class="container">
@@ -237,14 +238,14 @@
             </div>
 
             <div class="icon-row">
-                <button class="control-button" onclick="window.location.href='../eft-tapping.html'" title="Opnieuw beginnen">
-                    <i class="fas fa-rotate-right"></i>
+                <button class="control-button" onclick="window.location.href='../eft-tapping.html'" title="Opnieuw beginnen" aria-label="Opnieuw beginnen">
+                    <i class="fas fa-rotate-right" aria-hidden="true"></i>
                 </button>
-                <button class="control-button" id="pausePlayButton">
-                    <i class="fas fa-pause"></i>
+                <button class="control-button" id="pausePlayButton" aria-label="Pauzeren">
+                    <i class="fas fa-pause" aria-hidden="true"></i>
                 </button>
-                <button class="control-button" onclick="window.location.href='kloppunt-zijkant-oog.html'" title="Volgend kloppunt">
-                    <i class="fas fa-forward"></i>
+                <button class="control-button" onclick="window.location.href='kloppunt-zijkant-oog.html'" title="Volgend kloppunt" aria-label="Volgend kloppunt">
+                    <i class="fas fa-forward" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
