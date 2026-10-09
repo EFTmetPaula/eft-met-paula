@@ -177,6 +177,18 @@
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .privacy-note {
+            color: white;
+            text-align: center;
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        .privacy-note a {
+            color: white;
+            text-decoration: underline;
+        }
+
         .nav-button {
             background: white;
             color: var(--primary-color);
@@ -241,6 +253,7 @@
 
                 <button type="button" onclick="startTapping()">Start EFT Sessie</button>
             </form>
+            <p class="privacy-note"><i class="fas fa-lock" aria-hidden="true"></i> Wat je invult blijft op je eigen toestel en wordt niet verstuurd. <a href="privacy.html">Lees de privacyverklaring</a>.</p>
         </div>
     </div>
 
@@ -263,6 +276,9 @@
     </div>
 
     <script>
+        // Oude versies bewaarden de invoer blijvend (localStorage): opruimen
+        ['eftEmotion', 'eftSituation', 'eftSuds', 'startIntensity'].forEach(key => localStorage.removeItem(key));
+
         // Update SUDS waarde wanneer de slider beweegt
         document.getElementById('suds').addEventListener('input', function(e) {
             document.querySelector('.suds-value').textContent = e.target.value;
@@ -281,10 +297,11 @@
                 return;
             }
 
-            // Sla de waarden op voor gebruik in de volgende pagina
-            localStorage.setItem('eftEmotion', emotion);
-            localStorage.setItem('eftSituation', situation);
-            localStorage.setItem('eftSuds', sudsValue);
+            // Sla de waarden alleen tijdelijk op (sessionStorage): ze verdwijnen op de
+            // eindpagina of als het tabblad/de app wordt gesloten
+            sessionStorage.setItem('eftEmotion', emotion);
+            sessionStorage.setItem('eftSituation', situation);
+            sessionStorage.setItem('eftSuds', sudsValue);
 
             // Navigeer naar het karate punt
             window.location.href = 'kloppunten/kloppunt-karatepunt.html';

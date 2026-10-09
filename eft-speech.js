@@ -32,8 +32,16 @@
         document.head.appendChild(style);
     }
 
-    // Kies een Nederlandse stem: eerst de vertrouwde vrouwenstemmen, dan elke nl-NL, dan elke Nederlandse (bv. nl-BE)
+    // Kies een Nederlandse stem. Stemmen die op het toestel zelf werken (localService) gaan voor,
+    // zodat de zin het toestel niet verlaat. Alleen als er geen lokale Nederlandse stem is,
+    // gebruiken we een online stem (bv. "Google Nederlands" in Chrome op een computer).
     function pickVoice(voices) {
+        const local = voices.filter(v => v.localService !== false);
+        return pickFrom(local) || pickFrom(voices);
+    }
+
+    // Eerst de vertrouwde vrouwenstemmen, dan elke nl-NL, dan elke Nederlandse (bv. nl-BE)
+    function pickFrom(voices) {
         const isNL = v => /^nl[-_]NL$/i.test(v.lang);
         const isDutch = v => /^nl([-_]|$)/i.test(v.lang);
         const preferred = ['Colette', 'Hanna', 'Google Nederlands', 'nl-NL-Wavenet-A', 'nl-NL-Wavenet-C', 'Claire'];

@@ -374,8 +374,12 @@
         const homeButton = document.getElementById('homeButton');
 
         // Laad de beginintensiteit (opgeslagen op de startpagina als 'eftSuds')
-        const savedStart = localStorage.getItem('eftSuds');
+        const savedStart = sessionStorage.getItem('eftSuds');
         const startIntensity = savedStart !== null && savedStart !== '' ? parseInt(savedStart, 10) : null;
+
+        // De oefening is klaar: ingevulde gegevens direct wissen (de startscore staat nu alleen nog in deze pagina)
+        ['eftEmotion', 'eftSituation', 'eftSuds'].forEach(key => sessionStorage.removeItem(key));
+        ['eftEmotion', 'eftSituation', 'eftSuds', 'startIntensity'].forEach(key => localStorage.removeItem(key));
 
         // Teksten per score (0 = helemaal geen spanning meer, 10 = maximaal)
         const resultMessages = {
@@ -445,11 +449,8 @@
             showResult(parseInt(e.target.value, 10));
         });
 
-        // Nieuwe oefening: vorige invoer wissen en opnieuw beginnen
+        // Nieuwe oefening: opnieuw beginnen (de vorige invoer is al gewist)
         newExerciseButton.addEventListener('click', () => {
-            localStorage.removeItem('eftEmotion');
-            localStorage.removeItem('eftSituation');
-            localStorage.removeItem('eftSuds');
             window.location.href = 'eft-tapping.html';
         });
 

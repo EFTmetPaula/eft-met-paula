@@ -237,7 +237,7 @@
     <script src="../eft-speech.js"></script>
     <script>
         // Laad opgeslagen gegevens
-        const emotion = localStorage.getItem('eftEmotion') || 'verdrietig';
+        const emotion = sessionStorage.getItem('eftEmotion') || 'verdrietig';
 
         // Zin maken met de gedeelde zinnenmaker (../eft-formatter.js)
         const affirmationText = createAffirmation(emotion, '', 'emotion');

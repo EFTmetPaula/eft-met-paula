@@ -277,7 +277,7 @@
     <script src="../eft-speech.js"></script>
     <script>
         // Laad opgeslagen gegevens
-        const situation = localStorage.getItem('eftSituation') || 'deze situatie';
+        const situation = sessionStorage.getItem('eftSituation') || 'deze situatie';
 
         // Zin maken met de gedeelde zinnenmaker (../eft-formatter.js)
         const affirmationText = createAffirmation('', situation, 'situation');
