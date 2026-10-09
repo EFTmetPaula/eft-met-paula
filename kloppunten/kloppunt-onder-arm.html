@@ -271,6 +271,7 @@
         </div>
     </div>
 
+    <script src="../eft-formatter.js"></script>
     <script>
         let isSessionActive = false;
         let isPaused = false;
@@ -284,46 +285,8 @@
         const situation = localStorage.getItem('eftSituation') || 'ik stress heb';
         console.log('Geladen situatie (onder-arm):', situation);
         
-        // Functie om situatie natuurlijker te maken
-        function formatSituation(situation) {
-            if (!situation || situation.trim() === '') {
-                console.warn('Geen situatie opgegeven, gebruik fallback');
-                return 'omdat ik stress heb';
-            }
-            // Begin met alles in kleine letters
-            let formattedSituation = situation.toLowerCase();
-
-            // Verwijder 'omdat' als het er staat
-            if (formattedSituation.startsWith('omdat')) {
-                formattedSituation = formattedSituation.substring(7).trim();
-            }
-
-            // Verwijder eventuele punten aan het einde
-            formattedSituation = formattedSituation.replace(/\.$/, '');
-
-            // Corrigeer 'gestreste' naar 'gestresde'
-            formattedSituation = formattedSituation.replace(/gestreste/g, 'gestresde');
-
-            // Als de situatie 'werkdag' bevat, voeg 'ik een' toe en 'heb' erachter
-            if (formattedSituation.includes('werkdag')) {
-                formattedSituation = 'ik een ' + formattedSituation + ' heb';
-            }
-
-            // Voeg 'omdat' toe als het niet al in de zin staat
-            if (!situation.toLowerCase().includes('omdat')) {
-                formattedSituation = 'omdat ' + formattedSituation;
-            }
-
-            return formattedSituation;
-        }
-
-        // Maak de complete affirmatie
-        const formattedSituation = formatSituation(situation);
-        const affirmationText = formattedSituation;
-        console.log('Geformatteerde situatie (onder-arm):', formattedSituation);
-        console.log('Affirmatie tekst (onder-arm):', affirmationText);
-        
-        // Update de tekst in de HTML
+        // Zin maken met de gedeelde zinnenmaker (../eft-formatter.js)
+        const affirmationText = createAffirmation('', situation, 'situation');
         document.getElementById('situationAffirmation').textContent = affirmationText;
 
         // Spraak setup met hogere vrouwelijke stem

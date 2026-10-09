@@ -269,8 +269,8 @@
         });
 
         function startTapping() {
-            const emotion = document.getElementById('emotion').value.toLowerCase();
-            let situation = document.getElementById('situation').value.toLowerCase();
+            const emotion = document.getElementById('emotion').value.trim();
+            let situation = document.getElementById('situation').value.trim();
             const sudsValue = document.getElementById('suds').value;
 
             // Verwijder het woord 'omdat' als het al in de input staat
