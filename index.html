@@ -29,8 +29,6 @@
     <link rel="canonical" href="https://www.paulasangers.nl/app/">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="logo/logo-avatar-zonderbg.png">
-    <link rel="apple-touch-icon" href="logo/logo-avatar-zonderbg.png">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
@@ -279,6 +277,14 @@
             }
         }
     </style>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#3d5a55">
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EFT Paula">
+    <script src="/pwa.js" defer></script>
 </head>
 <body style="background-color: #3d5a55; margin: 0; padding: 0;">
     
@@ -376,29 +382,6 @@
             window.location.pathname !== '/') {
             // Als we niet op de juiste pagina zijn, ga naar index.html
             window.location.href = './index.html';
-        }
-
-        // Service Worker VERWIJDERD - cache clearing code
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Verwijder ALLE oude service workers
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    for(let registration of registrations) {
-                        registration.unregister();
-                        console.log('Service Worker verwijderd - geen cache meer');
-                    }
-                });
-                
-                // Verwijder alle caches
-                caches.keys().then(function(cacheNames) {
-                    return Promise.all(
-                        cacheNames.map(function(cacheName) {
-                            console.log('Cache verwijderd:', cacheName);
-                            return caches.delete(cacheName);
-                        })
-                    );
-                });
-            });
         }
 
     </script>
