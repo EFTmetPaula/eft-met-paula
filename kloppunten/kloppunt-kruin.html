@@ -306,13 +306,8 @@
     <!-- Navigatiebalk verwijderd voor rustiger oefenflow -->
 
     <script src="../eft-formatter.js"></script>
+    <script src="../eft-speech.js"></script>
     <script>
-        let isPlaying = true;
-        let repeatCount = 0;
-        const maxRepeats = 1;
-        let speech = null;
-        let pageStartTime = Date.now();
-
         // Laad opgeslagen gegevens
         const emotion = localStorage.getItem('eftEmotion') || 'deze emotie';
 
@@ -320,131 +315,8 @@
         const affirmationText = createAffirmation(emotion, '', 'emotion');
         document.getElementById('affirmation').textContent = affirmationText;
 
-        // Spraak setup met hogere vrouwelijke stem
-        let voicesLoaded = false;
-        let selectedVoice = null;
-
-        function setupVoice() {
-            const voices = window.speechSynthesis.getVoices();
-            if (voices.length === 0) return;
-            
-            console.log('Alle beschikbare stemmen:', voices.map(v => `${v.name} (${v.lang})`));
-            
-            // Zoek expliciet naar vrouwelijke Nederlandse stemmen
-            // 1. Microsoft Colette (vrouwelijk) of Hanna
-            selectedVoice = voices.find(v => v.name.includes('Colette') && v.lang === 'nl-NL');
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Hanna') && v.lang === 'nl-NL');
-            
-            // 2. Google vrouwelijke stemmen
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name === 'Google Nederlands' && v.lang === 'nl-NL');
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-A'));
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-C'));
-            
-            // 3. Apple vrouwelijke stemmen (Claire, niet Xander die mannelijk is)
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Claire') && v.lang === 'nl-NL');
-            
-            // 4. Andere vrouwelijke stemmen - vermijd Frank (mannelijk)
-            if (!selectedVoice) {
-                const dutchVoices = voices.filter(v => v.lang === 'nl-NL' && !v.name.includes('Frank') && !v.name.includes('Xander'));
-                selectedVoice = dutchVoices.find(v => 
-                    v.name.toLowerCase().includes('female') || 
-                    v.name.toLowerCase().includes('vrouw') ||
-                    v.name.toLowerCase().includes('colette') ||
-                    v.name.toLowerCase().includes('claire')
-                );
-            }
-            
-            // 5. Als laatste, eerste Nederlandse stem (niet Frank)
-            if (!selectedVoice) {
-                const dutchVoices = voices.filter(v => v.lang === 'nl-NL' && !v.name.includes('Frank') && !v.name.includes('Xander'));
-                selectedVoice = dutchVoices[0];
-            }
-            
-            if (selectedVoice) {
-                console.log('Geselecteerde stem:', selectedVoice.name, '(', selectedVoice.lang, ')');
-                voicesLoaded = true;
-            } else {
-                console.warn('Geen geschikte Nederlandse stem gevonden');
-            }
-        }
-
-        // Zorg ervoor dat stemmen geladen zijn
-        if (window.speechSynthesis) {
-            setupVoice();
-            window.speechSynthesis.onvoiceschanged = setupVoice;
-        }
-
-        window.addEventListener('load', () => {
-            isPlaying = true;
-            repeatCount = 0;
-            pageStartTime = Date.now();
-            
-            // Wacht tot stemmen geladen zijn voordat we beginnen
-            const startSpeaking = () => {
-                if (voicesLoaded && selectedVoice) {
-                    speakAffirmation();
-                } else {
-                    setTimeout(startSpeaking, 100);
-                }
-            };
-            startSpeaking();
-        });
-
-        function speakAffirmation() {
-            if (!window.speechSynthesis || !selectedVoice) {
-                console.warn('Speech synthesis of stem niet beschikbaar');
-                return;
-            }
-            
-            // Zorg ervoor dat alle vorige spraak wordt geannuleerd
-            window.speechSynthesis.cancel();
-            
-            // Wacht even na cancel voordat we een nieuwe utterance maken
-            setTimeout(() => {
-                const affirmationText = document.getElementById('affirmation').textContent;
-                
-                // Maak een nieuwe utterance
-                const utterance = new SpeechSynthesisUtterance(affirmationText);
-                utterance.lang = 'nl-NL';
-                utterance.rate = 0.85;
-                utterance.pitch = 1.2;  // Hogere pitch voor vrouwelijke stem
-                utterance.volume = 0.9;
-                
-                // Gebruik de vooraf geselecteerde stem
-                utterance.voice = selectedVoice;
-                
-                console.log('Spreek met stem:', selectedVoice.name);
-
-                utterance.onend = function() {
-                    // Wacht tot 5 seconden na openen van de pagina zijn verstreken
-                    const minWaitTime = 5000;
-                    const elapsedTime = Date.now() - pageStartTime;
-                    const remainingTime = Math.max(0, minWaitTime - elapsedTime);
-                    setTimeout(() => {
-                        window.location.href = 'kloppunt-wenkbrauw.html';
-                    }, remainingTime);
-                };
-                
-                utterance.onerror = function(event) {
-                    console.error('Speech synthesis error:', event);
-                };
-
-                window.speechSynthesis.speak(utterance);
-            }, 50);
-        }
-
-        // Pauze/Play functionaliteit
-        const pausePlayButton = document.getElementById('pausePlayButton');
-        pausePlayButton.addEventListener('click', () => {
-            isPlaying = !isPlaying;
-            if (!isPlaying) {
-                window.speechSynthesis.pause();
-                pausePlayButton.innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                window.speechSynthesis.resume();
-                pausePlayButton.innerHTML = '<i class="fas fa-pause"></i>';
-            }
-        });
+        // Voorlezen na een tik op Start, met pauze en automatisch door (../eft-speech.js)
+        EFTSpeech.init({ text: affirmationText, next: 'kloppunt-wenkbrauw.html', repeats: 1 });
     </script>
 </body>
 </html> 

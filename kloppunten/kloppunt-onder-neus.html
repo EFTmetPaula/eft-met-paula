@@ -215,118 +215,17 @@
         </div>
     </div>
     <script src="../eft-formatter.js"></script>
+    <script src="../eft-speech.js"></script>
     <script>
-        let isSessionActive = false;
-        let isPaused = false;
-        let speech = null;
-        let repeatCount = 0;
-        const maxRepeats = 3;
-        let isPlaying = true;
-        let pageStartTime = Date.now();
-
         // Laad opgeslagen gegevens
         const emotion = localStorage.getItem('eftEmotion') || 'verdrietig';
-        console.log('Geladen emotie (onder-neus):', emotion);
 
         // Zin maken met de gedeelde zinnenmaker (../eft-formatter.js)
         const affirmationText = createAffirmation(emotion, '', 'emotion');
         document.getElementById('affirmation').textContent = affirmationText;
 
-        // Spraak setup met hogere vrouwelijke stem
-        let voicesLoaded = false;
-        let selectedVoice = null;
-
-        function setupVoice() {
-            const voices = window.speechSynthesis.getVoices();
-            if (voices.length === 0) return;
-            
-            selectedVoice = voices.find(v => v.name.includes('Colette') && v.lang === 'nl-NL');
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Hanna') && v.lang === 'nl-NL');
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name === 'Google Nederlands' && v.lang === 'nl-NL');
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-A'));
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('nl-NL-Wavenet-C'));
-            if (!selectedVoice) selectedVoice = voices.find(v => v.name.includes('Claire') && v.lang === 'nl-NL');
-            
-            if (!selectedVoice) {
-                const dutchVoices = voices.filter(v => v.lang === 'nl-NL' && !v.name.includes('Frank') && !v.name.includes('Xander'));
-                selectedVoice = dutchVoices[0];
-            }
-            
-            if (selectedVoice) voicesLoaded = true;
-        }
-
-        function startEFTOnderNeus() {
-            if (voicesLoaded && selectedVoice) {
-                isPlaying = true;
-                speakAffirmation();
-            } else {
-                setTimeout(startEFTOnderNeus, 100);
-            }
-        }
-
-        if (window.speechSynthesis) {
-            setupVoice();
-            window.speechSynthesis.onvoiceschanged = () => {
-                setupVoice();
-                startEFTOnderNeus();
-            };
-        }
-        
-        startEFTOnderNeus();
-
-        // Tekst uitspreken
-        function speakAffirmation() {
-            if (!window.speechSynthesis || !selectedVoice) {
-                console.warn('Speech synthesis niet beschikbaar, ga direct door');
-                setTimeout(() => {
-                    window.location.href = 'kloppunt-kin.html';
-                }, 5000);
-                return;
-            }
-            
-            window.speechSynthesis.cancel();
-            
-            setTimeout(() => {
-                console.log('Spreek (onder-neus):', affirmationText, 'met stem:', selectedVoice.name);
-                
-                const utterance = new SpeechSynthesisUtterance(affirmationText);
-                utterance.lang = 'nl-NL';
-                utterance.rate = 0.85;
-                utterance.pitch = 1.2;
-                utterance.volume = 0.9;
-                utterance.voice = selectedVoice;
-                
-                utterance.onend = function() {
-                    console.log('Speech voltooid (onder-neus), ga door naar volgende pagina');
-                    const minWaitTime = 5000;
-                    const elapsedTime = Date.now() - pageStartTime;
-                    const remainingTime = Math.max(0, minWaitTime - elapsedTime);
-                    setTimeout(() => {
-                        window.location.href = 'kloppunt-kin.html';
-                    }, remainingTime);
-                };
-                
-                utterance.onerror = function(event) {
-                    console.error('Speech error (onder-neus):', event.error);
-                    setTimeout(() => {
-                        window.location.href = 'kloppunt-kin.html';
-                    }, 2000);
-                };
-                
-                window.speechSynthesis.speak(utterance);
-            }, 50);
-        }
-        // Pauzeer sessie
-        document.getElementById('pausePlayButton').addEventListener('click', () => {
-            isPaused = !isPaused;
-            if (isPaused) {
-                window.speechSynthesis.pause();
-                document.getElementById('pausePlayButton').innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                window.speechSynthesis.resume();
-                document.getElementById('pausePlayButton').innerHTML = '<i class="fas fa-pause"></i>';
-            }
-        });
+        // Voorlezen na een tik op Start, met pauze en automatisch door (../eft-speech.js)
+        EFTSpeech.init({ text: affirmationText, next: 'kloppunt-kin.html', repeats: 1 });
     </script>
 </body>
 </html> 
