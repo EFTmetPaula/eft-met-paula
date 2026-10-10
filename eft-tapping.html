@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>EFT Tapping - EFT met Paula</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/fontawesome-subset.css">
     <style>
         :root {
             --primary-color: #4d6a66;
@@ -218,6 +218,17 @@
         .nav-button.disabled:hover {
             transform: none;
         }
+        .form-error {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a2c28;
+            border-left: 4px solid #c0392b;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 0 0 15px;
+        }
+        .form-error[hidden] {
+            display: none;
+        }
     </style>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#4d6a66">
@@ -245,7 +256,7 @@
             <form id="eftForm">
                 <div class="form-group">
                     <label for="emotion">Ik voel me:</label>
-                    <input type="text" id="emotion" name="emotion" placeholder="bijv. angstig, verdrietig, boos" required title="bijvoorbeeld: angstig, verdrietig, boos, gestresst, onzeker">
+                    <input type="text" id="emotion" name="emotion" placeholder="bijv. angstig, verdrietig, boos" required title="bijvoorbeeld: angstig, verdrietig, boos, gestrest, onzeker">
                 </div>
 
                 <div class="form-group">
@@ -261,6 +272,8 @@
                         <div class="scale-labels" aria-hidden="true"><span>0 = geen spanning</span><span>10 = heel veel spanning</span></div>
                     </div>
                 </div>
+
+                <p id="formError" class="form-error" role="alert" hidden></p>
 
                 <button type="button" onclick="startTapping()">Start EFT Sessie</button>
             </form>
@@ -306,10 +319,20 @@
             // Verwijder het woord 'omdat' als het al in de input staat
             situation = situation.replace(/^omdat\s+/i, '');
 
+            const formError = document.getElementById('formError');
+            const emotionInput = document.getElementById('emotion');
+            const situationInput = document.getElementById('situation');
+            emotionInput.setAttribute('aria-invalid', emotion ? 'false' : 'true');
+            situationInput.setAttribute('aria-invalid', situation ? 'false' : 'true');
             if (!emotion || !situation) {
-                alert('Vul alstublieft beide velden in om te beginnen.');
+                formError.textContent = !emotion && !situation
+                    ? 'Vul allebei de velden in om te beginnen.'
+                    : (!emotion ? 'Vul nog in hoe je je voelt.' : 'Vul nog in waardoor je je zo voelt.');
+                formError.hidden = false;
+                (!emotion ? emotionInput : situationInput).focus();
                 return;
             }
+            formError.hidden = true;
 
             // Sla de waarden alleen tijdelijk op (sessionStorage): ze verdwijnen op de
             // eindpagina of als het tabblad/de app wordt gesloten

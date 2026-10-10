@@ -1,0 +1,31 @@
+/* Font Awesome Free 6.0.0 (https://fontawesome.com, licentie: https://fontawesome.com/license/free)
+ * Alleen de iconen die deze app gebruikt, zelf gehost (geen externe CDN). */
+.fa,.fas,.fa-solid,.fab,.fa-brands{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+.fas,.fa-solid,.fa{font-family:'Font Awesome 6 Free';font-weight:900}
+.fab,.fa-brands{font-family:'Font Awesome 6 Brands';font-weight:400}
+@font-face{font-family:'Font Awesome 6 Free';font-style:normal;font-weight:900;font-display:block;src:url("/fonts/fa-solid-subset.woff2") format("woff2")}
+@font-face{font-family:'Font Awesome 6 Brands';font-style:normal;font-weight:400;font-display:block;src:url("/fonts/fa-brands-subset.woff2") format("woff2")}
+.fa-arrow-up-from-bracket::before{content:"\e09a"}
+.fa-chalkboard-teacher::before{content:"\f51c"}
+.fa-check-circle::before{content:"\f058"}
+.fa-info-circle::before{content:"\f05a"}
+.fa-play-circle::before{content:"\f144"}
+.fa-question-circle::before{content:"\f059"}
+.fa-download::before{content:"\f019"}
+.fa-envelope::before{content:"\f0e0"}
+.fa-forward::before{content:"\f04e"}
+.fa-globe::before{content:"\f0ac"}
+.fa-hand-point-up::before{content:"\f0a6"}
+.fa-hands-helping::before{content:"\f4c4"}
+.fa-home::before{content:"\f015"}
+.fa-lightbulb::before{content:"\f0eb"}
+.fa-lock::before{content:"\f023"}
+.fa-mobile-alt::before{content:"\f3cd"}
+.fa-pause::before{content:"\f04c"}
+.fa-phone::before{content:"\f095"}
+.fa-play::before{content:"\f04b"}
+.fa-rotate-right::before{content:"\f2f9"}
+.fa-user-friends::before{content:"\f500"}
+.fa-instagram::before{content:"\f16d"}
+.fa-whatsapp::before{content:"\f232"}
+.fa-android::before{content:"\f17b"}

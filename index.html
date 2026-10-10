@@ -32,8 +32,8 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="/fontawesome-subset.css">
+    <noscript><link rel="stylesheet" href="/fontawesome-subset.css"></noscript>
     <style>
         :root {
             --primary-color: #4d6a66;  /* Donkerder groen voor beter contrast */
@@ -320,12 +320,10 @@
     </script>
     
     <div class="container">
-        <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula logo" class="header-image pulse" loading="lazy">
+        <img src="logo/logo-avatar-zonderbg.png" alt="EFT met Paula logo" class="header-image pulse" fetchpriority="high">
         <div class="intro">
             <h1>Welkom bij EFT met Paula</h1>
             <p>Ontdek de kracht van EFT (Emotional Freedom Techniques) en leer hoe je zelf emotionele en fysieke spanning kunt verminderen. Deze app begeleidt je stap voor stap door de EFT-techniek, zodat je direct aan de slag kunt.</p>
-            
-            <p>Ontdek hoe je zelf spanning kunt verminderen.</p>
         </div>
 
         <div class="menu-grid">
@@ -381,16 +379,5 @@
             <i class="fas fa-question-circle" aria-hidden="true"></i>
         </a>
     </div>
-    <script>
-        // Voorkom onbedoelde redirects
-        if (window.location.pathname !== '/eft-met-paula/' && 
-            window.location.pathname !== '/eft-met-paula/index.html' && 
-            window.location.pathname !== '/index.html' && 
-            window.location.pathname !== '/') {
-            // Als we niet op de juiste pagina zijn, ga naar index.html
-            window.location.href = './index.html';
-        }
-
-    </script>
 </body>
 </html> 

@@ -1,6 +1,6 @@
 // Service worker voor EFT met Paula
 // Verhoog CACHE_VERSION bij elke wijziging van de app-bestanden.
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = 'eft-paula-' + CACHE_VERSION;
 
 const APP_SHELL = [
@@ -11,7 +11,7 @@ const APP_SHELL = [
   '/kloppunten/kloppunt-onder-oog.html', '/kloppunten/kloppunt-onder-neus.html',
   '/kloppunten/kloppunt-kin.html', '/kloppunten/kloppunt-sleutelbeen.html',
   '/kloppunten/kloppunt-onder-arm.html',
-  '/styles.css', '/eft-formatter.js', '/eft-speech.js', '/pwa.js', '/a11y.css', '/manifest.json',
+  '/styles.css', '/eft-formatter.js', '/eft-speech.js', '/pwa.js', '/a11y.css', '/fontawesome-subset.css', '/fonts/fa-solid-subset.woff2', '/fonts/fa-brands-subset.woff2', '/manifest.json',
   '/logo/logo-avatar-zonderbg.png', '/logo/favicon.png',
   '/icons/app-icon-192.png', '/icons/app-icon-512.png', '/icons/apple-touch-icon.png'
 ];
