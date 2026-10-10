@@ -16,7 +16,7 @@ textarea:focus-visible,
 /* Placeholder duidelijk lichter en schuin, typed tekst wit en recht */
 input::placeholder,
 textarea::placeholder {
-    color: rgba(255, 255, 255, 0.78) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
     font-style: italic !important;
     opacity: 1;
 }

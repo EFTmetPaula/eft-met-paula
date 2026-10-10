@@ -23,7 +23,7 @@
         style.id = 'eft-speech-styles';
         style.textContent =
             '.eft-start-button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:300px;' +
-            'margin:20px auto 10px;padding:15px;background-color:var(--primary-color,#3d5a55);color:#fff;border:2px solid #fff;' +
+            'margin:20px auto 10px;padding:15px;background-color:var(--primary-color,#4d6a66);color:#fff;border:2px solid #fff;' +
             'border-radius:8px;font-size:1.1em;font-weight:600;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease}' +
             '.eft-start-button:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(77,106,102,.15)}' +
             '.eft-start-button:focus-visible{outline:3px solid #fff;outline-offset:3px}' +
