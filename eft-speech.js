@@ -102,7 +102,8 @@
         startButton.type = 'button';
         startButton.className = 'eft-start-button';
         startButton.id = 'startSpeechButton';
-        startButton.innerHTML = '<i class="fas fa-play" aria-hidden="true"></i> <span>Start</span>';
+        startButton.innerHTML = '<i class="fas fa-play" aria-hidden="true"></i>';
+        startButton.setAttribute('aria-label', 'Start voorlezen');
         const message = document.createElement('p');
         message.className = 'eft-speech-message';
         message.id = 'speechMessage';
