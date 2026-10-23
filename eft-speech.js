@@ -32,29 +32,34 @@
         document.head.appendChild(style);
     }
 
-    // Kies een Nederlandse stem. Stemmen die op het toestel zelf werken (localService) gaan voor,
-    // zodat de zin het toestel niet verlaat. Alleen als er geen lokale Nederlandse stem is,
-    // gebruiken we een online stem (bv. "Google Nederlands" in Chrome op een computer).
-    function pickVoice(voices) {
-        const local = voices.filter(v => v.localService !== false);
-        return pickFrom(local) || pickFrom(voices);
+    // Kies de meest natuurlijke Nederlandse stem die dit toestel heeft. Echte namen per platform:
+    // ALLEEN stemmen die op het toestel zelf werken (localService), zodat de zin het toestel nooit verlaat.
+    // Online stemmen (bv. "Microsoft ... Online (Natural)" in Edge, "Google Nederlands" in Chrome) slaan we over.
+    // - Windows lokaal: "Microsoft Frank - Dutch (Netherlands)"; Android: de Nederlandse systeemstem
+    // - iOS/macOS: "Claire" (nl-NL), "Xander" (nl-NL, man), "Ellen" (nl-BE); verbeterde varianten heten
+    //   "Claire (Enhanced)"/"(Premium)" of hebben voiceURI "com.apple.voice.enhanced|premium...."
+    // Volgorde: nl-NL boven nl-BE, natuurlijke/neurale/verbeterde stemmen eerst, vrouwenstem boven mannenstem.
+    const isNL = v => /^nl[-_]NL$/i.test(v.lang);
+    const isDutch = v => /^nl([-_]|$)/i.test(v.lang);
+    const QUALITY = /Natural|Neural|Online|Enhanced|Premium|Siri|Wavenet|enhanced\.|premium\./i;
+    const FEMALE = ['Colette', 'Fenna', 'Claire', 'Ellen', 'Dena', 'Hanna', 'Google Nederlands', 'Wavenet-A', 'Wavenet-C'];
+    const MALE = /Frank|Xander|Maarten|Arnaud/i;
+
+    function voiceScore(v) {
+        const id = (v.name || '') + ' ' + (v.voiceURI || '');
+        let score = 0;
+        if (isNL(v)) score += 100;
+        if (QUALITY.test(id)) score += 50;
+        const f = FEMALE.findIndex(n => id.includes(n));
+        if (f >= 0) score += 30 - f;        // eerder in de lijst = voorkeur
+        if (MALE.test(id)) score -= 20;
+        return score;
     }
 
-    // Eerst de vertrouwde vrouwenstemmen, dan elke nl-NL, dan elke Nederlandse (bv. nl-BE)
-    function pickFrom(voices) {
-        const isNL = v => /^nl[-_]NL$/i.test(v.lang);
-        const isDutch = v => /^nl([-_]|$)/i.test(v.lang);
-        const preferred = ['Colette', 'Hanna', 'Google Nederlands', 'nl-NL-Wavenet-A', 'nl-NL-Wavenet-C', 'Claire'];
-        for (const name of preferred) {
-            const v = voices.find(v => v.name.includes(name) && isDutch(v));
-            if (v) return v;
-        }
-        const male = v => /Frank|Xander/.test(v.name);
-        return voices.find(v => isNL(v) && !male(v)) ||
-               voices.find(isNL) ||
-               voices.find(v => isDutch(v) && !male(v)) ||
-               voices.find(isDutch) ||
-               null;
+    function pickVoice(voices) {
+        const dutch = (voices || []).filter(v => isDutch(v) && v.localService !== false);
+        if (!dutch.length) return null;
+        return dutch.reduce((best, v) => (voiceScore(v) > voiceScore(best) ? v : best));
     }
 
     // Wacht maximaal VOICE_TIMEOUT_MS op de stemmenlijst (geen eindeloze lus)
@@ -156,7 +161,7 @@
             const utterance = new global.SpeechSynthesisUtterance(text);
             utterance.lang = 'nl-NL';
             utterance.rate = 0.85;
-            utterance.pitch = 1.2;
+            utterance.pitch = 1.0;
             utterance.volume = 0.9;
             try { utterance.voice = voice; } catch (e) { /* stem kan niet gezet worden: standaardstem */ }
 
