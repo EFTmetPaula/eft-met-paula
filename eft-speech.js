@@ -22,20 +22,14 @@
         const style = document.createElement('style');
         style.id = 'eft-speech-styles';
         style.textContent =
-            '.eft-start-button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:300px;' +
-            'margin:20px auto 10px;padding:15px;background-color:var(--primary-color,#4d6a66);color:#fff;border:2px solid #fff;' +
-            'border-radius:8px;font-size:1.1em;font-weight:600;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease}' +
-            '.eft-start-button:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(77,106,102,.15)}' +
-            '.eft-start-button:focus-visible{outline:3px solid #fff;outline-offset:3px}' +
-            '.eft-speech-message{color:#fff;text-align:center;margin:10px auto;max-width:500px;line-height:1.5}' +
-            '@media (prefers-reduced-motion:reduce){.eft-start-button{transition:none}}';
+            '.eft-speech-message{color:#fff;text-align:center;margin:10px auto;max-width:500px;line-height:1.5}';
         document.head.appendChild(style);
     }
 
     // Kies de meest natuurlijke Nederlandse stem die dit toestel heeft. Echte namen per platform:
-    // ALLEEN stemmen die op het toestel zelf werken (localService), zodat de zin het toestel nooit verlaat.
-    // Online stemmen (bv. "Microsoft ... Online (Natural)" in Edge, "Google Nederlands" in Chrome) slaan we over.
-    // - Windows lokaal: "Microsoft Frank - Dutch (Netherlands)"; Android: de Nederlandse systeemstem
+    // Eerst de beste stem die op het toestel zelf werkt (localService). Is die er niet, dan de beste
+    // Nederlandse stem van welke soort ook (bv. "Google Nederlands" op Android, die zich als niet-lokaal meldt).
+    // - Windows lokaal: "Microsoft Frank - Dutch (Netherlands)"; Edge online: "Microsoft Colette Online (Natural)"
     // - iOS/macOS: "Claire" (nl-NL), "Xander" (nl-NL, man), "Ellen" (nl-BE); verbeterde varianten heten
     //   "Claire (Enhanced)"/"(Premium)" of hebben voiceURI "com.apple.voice.enhanced|premium...."
     // Volgorde: nl-NL boven nl-BE, natuurlijke/neurale/verbeterde stemmen eerst, vrouwenstem boven mannenstem.
@@ -57,7 +51,12 @@
     }
 
     function pickVoice(voices) {
-        const dutch = (voices || []).filter(v => isDutch(v) && v.localService !== false);
+        const local = (voices || []).filter(v => v.localService !== false);
+        return bestDutch(local) || bestDutch(voices || []);
+    }
+
+    function bestDutch(voices) {
+        const dutch = voices.filter(isDutch);
         if (!dutch.length) return null;
         return dutch.reduce((best, v) => (voiceScore(v) > voiceScore(best) ? v : best));
     }
@@ -97,20 +96,14 @@
         const pauseButton = document.getElementById('pausePlayButton');
         const iconRow = pauseButton ? pauseButton.parentElement : null;
 
-        // Startknop en meldingsruimte toevoegen boven de knoppenrij
-        const startButton = document.createElement('button');
-        startButton.type = 'button';
-        startButton.className = 'eft-start-button';
-        startButton.id = 'startSpeechButton';
-        startButton.innerHTML = '<i class="fas fa-play" aria-hidden="true"></i>';
-        startButton.setAttribute('aria-label', 'Start voorlezen');
+        // Meldingsruimte boven de knoppenrij. De ronde play/pauze-knop start het voorlezen bij de eerste tik
+        // (die tik telt als de gebruikersactie die iPhone/iPad nodig heeft).
         const message = document.createElement('p');
         message.className = 'eft-speech-message';
         message.id = 'speechMessage';
         message.setAttribute('role', 'status');
         message.hidden = true;
         if (iconRow) {
-            iconRow.parentElement.insertBefore(startButton, iconRow);
             iconRow.parentElement.insertBefore(message, iconRow);
         }
 
@@ -145,7 +138,6 @@
         function goManual(text) {
             clearTimers();
             state = 'manual';
-            startButton.hidden = true;
             setIcon('play', 'Voorlezen niet beschikbaar');
             showMessage(text);
         }
@@ -194,7 +186,6 @@
             repeatIndex = 0;
             speechDone = false;
             startTime = Date.now();
-            startButton.hidden = true;
             message.hidden = true;
             setIcon('pause', 'Pauze');
             synth.cancel();
@@ -220,12 +211,16 @@
             }
         }
 
-        startButton.addEventListener('click', start);
+        let voiceLoaded = false;
+        let startWhenLoaded = false;
 
         if (pauseButton) {
-            setIcon('play', 'Start');
+            setIcon('play', 'Start voorlezen');
             pauseButton.addEventListener('click', () => {
-                if (state === 'idle') start();
+                if (state === 'idle') {
+                    if (voiceLoaded) start();
+                    else startWhenLoaded = true;   // stemmenlijst nog niet binnen: starten zodra die er is
+                }
                 else if (state === 'playing' || state === 'finished') pause();
                 else if (state === 'paused') resume();
             });
@@ -236,12 +231,11 @@
             if (synth) synth.cancel();
         });
 
-        // Startknop pas actief maken als we weten of er een stem is
-        startButton.disabled = true;
         loadVoice().then(v => {
             voice = v;
-            startButton.disabled = false;
+            voiceLoaded = true;
             if (!voice) goManual(NO_VOICE_MESSAGE);
+            else if (startWhenLoaded && state === 'idle') start();
         });
 
         return { start, pause, resume, getState: () => state };
