@@ -156,7 +156,7 @@
             utterance.rate = 0.85;
             utterance.pitch = 1.0;
             utterance.volume = 0.9;
-            try { utterance.voice = voice; } catch (e) { /* stem kan niet gezet worden: standaardstem */ }
+            if (voice) try { utterance.voice = voice; } catch (e) { /* stem kan niet gezet worden: standaardstem */ }
 
             utterance.onend = () => {
                 if (myGeneration !== generation || state !== 'playing') return;
@@ -177,11 +177,19 @@
                 if (event && (event.error === 'interrupted' || event.error === 'canceled')) return;
                 goManual(ERROR_MESSAGE);
             };
+            if (!voice) {
+                // Geen stem in de lijst (komt voor op Android): toch proberen met de Nederlandse standaardstem
+                let begonnen = false;
+                utterance.onstart = () => { begonnen = true; };
+                setTimeout(() => {
+                    if (!begonnen && myGeneration === generation && state === 'playing') { generation++; synth.cancel(); goManual(NO_VOICE_MESSAGE); }
+                }, 4000);
+            }
             synth.speak(utterance);
         }
 
         function start() {
-            if (!voice) { goManual(NO_VOICE_MESSAGE); return; }
+            if (!synth) { goManual(NO_VOICE_MESSAGE); return; }
             state = 'playing';
             repeatIndex = 0;
             speechDone = false;
@@ -234,7 +242,7 @@
         loadVoice().then(v => {
             voice = v;
             voiceLoaded = true;
-            if (!voice) goManual(NO_VOICE_MESSAGE);
+            if (!synth) goManual(NO_VOICE_MESSAGE);
             else if (startWhenLoaded && state === 'idle') start();
         });
 

@@ -1,6 +1,6 @@
 // Service worker voor EFT met Paula
 // Verhoog CACHE_VERSION bij elke wijziging van de app-bestanden.
-const CACHE_VERSION = 'v29';
+const CACHE_VERSION = 'v30';
 const CACHE_NAME = 'eft-paula-' + CACHE_VERSION;
 
 const APP_SHELL = [
