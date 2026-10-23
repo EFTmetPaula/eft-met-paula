@@ -307,7 +307,7 @@
                 <p class="comparison-text" id="comparisonText" style="display: none;"></p>
                 <div id="resultText"></div>
                 <div class="button-container">
-                    <button class="action-button" id="restartButton" style="display: none;" onclick="window.location.href='eft-tapping.html'">Herstart Oefening</button>
+                    <button class="action-button" id="restartButton" style="display: none;" >Herstart Oefening</button>
                     <button class="action-button" id="newExerciseButton" style="display: none;">Nieuwe Oefening</button>
                     <button class="action-button" id="homeButton" style="display: none;"><i class="fas fa-home" aria-hidden="true"></i> Terug naar home</button>
                 </div>
@@ -392,6 +392,22 @@
         ['eftEmotion', 'eftSituation', 'eftSuds'].forEach(key => sessionStorage.removeItem(key));
         ['eftEmotion', 'eftSituation', 'eftSuds', 'startIntensity'].forEach(key => localStorage.removeItem(key));
 
+        // Blijft de score steeds gelijk? Alleen lokaal in deze browsertab (sessionStorage), niets wordt verstuurd.
+        // 'eftHerhaling' wordt alleen gezet via "Herstart Oefening"; een nieuwe oefening, home of een nieuwe tab begint opnieuw.
+        let vorigeReeks = { score: null, aantal: 0 };
+        if (sessionStorage.getItem('eftHerhaling') === '1') {
+            try { vorigeReeks = JSON.parse(sessionStorage.getItem('eftGelijkReeks')) || vorigeReeks; } catch (e) {}
+        }
+        sessionStorage.removeItem('eftHerhaling');
+        sessionStorage.removeItem('eftGelijkReeks');
+        let huidigeReeks = { score: null, aantal: 0 };
+
+        function reeksVoor(value) {
+            const gelijk = startIntensity !== null && !isNaN(startIntensity) && value === startIntensity &&
+                (vorigeReeks.score === null || vorigeReeks.score === value);
+            return gelijk ? { score: value, aantal: (vorigeReeks.score === value ? vorigeReeks.aantal : 0) + 1 } : { score: null, aantal: 0 };
+        }
+
         // Teksten per score (0 = helemaal geen spanning meer, 10 = maximaal)
         const resultMessages = {
             0: { title: 'Gefeliciteerd! 🎉', text: 'Wat fijn dat de spanning volledig over is. Je hebt de oefening succesvol afgerond.' },
@@ -437,6 +453,24 @@
             resultText.appendChild(title);
             resultText.appendChild(text);
 
+            // Extra zin bij hoge score, stijgende score of meer dan 3 rondes gelijk
+            huidigeReeks = reeksVoor(value);
+            const hoger = startIntensity !== null && !isNaN(startIntensity) && value > startIntensity;
+            if (value >= 8 || hoger || huidigeReeks.aantal > 3) {
+                title.remove(); // bij de extra zin geen aparte titel
+                const extra = document.createElement('p');
+                extra.className = 'extra-hint';
+                extra.append('Merk je dat je blijft hangen op dezelfde score, of wordt het gevoel heftiger? Wellicht klop je op een dieper liggend thema. Overweeg om dit samen met een ');
+                const link = document.createElement('a');
+                link.href = 'extra-hulp.html';
+                link.textContent = 'erkende EFT-therapeut';
+                link.style.color = 'white';
+                link.style.textDecoration = 'underline';
+                extra.appendChild(link);
+                extra.append(' aan te pakken.');
+                resultText.appendChild(extra);
+            }
+
             // Bij 0: terug naar home of nieuwe oefening. Anders: herhalen of nieuwe oefening.
             homeButton.style.display = value === 0 ? 'block' : 'none';
             restartButton.style.display = value === 0 ? 'none' : 'block';
@@ -461,6 +495,13 @@
         intensitySlider.addEventListener('change', function(e) {
             clearTimeout(resultTimer);
             showResult(parseInt(e.target.value, 10));
+        });
+
+        // Herstart: zelfde onderwerp nog een ronde; onthoud lokaal hoe vaak de score gelijk bleef
+        restartButton.addEventListener('click', () => {
+            sessionStorage.setItem('eftHerhaling', '1');
+            sessionStorage.setItem('eftGelijkReeks', JSON.stringify(huidigeReeks));
+            window.location.href = 'eft-tapping.html';
         });
 
         // Nieuwe oefening: opnieuw beginnen (de vorige invoer is al gewist)
