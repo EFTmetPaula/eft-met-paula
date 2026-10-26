@@ -77,39 +77,75 @@
         'somber', 'nerveus', 'zenuwachtig', 'jaloers', 'schuldig', 'beschaamd', 'woedend',
         'wanhopig', 'machteloos', 'onrustig', 'overweldigd', 'gekwetst', 'opgejaagd',
         'uitgeput', 'paniekerig', 'bezorgd', 'kapot', 'verlegen', 'gekrenkt', 'afgewezen',
-        'alleen', 'ongerust', 'opgefokt', 'gepest', 'gekwetst', 'onveilig'
+        'alleen', 'ongerust', 'opgefokt', 'gepest', 'onveilig',
+        // korte, veelgebruikte woorden die je niet aan de uitgang herkent
+        'stom', 'dom', 'rot', 'klote', 'kut', 'slecht', 'raar', 'gek', 'vies', 'ziek', 'zwak',
+        'klein', 'groot', 'lelijk', 'dik', 'nutteloos', 'waardeloos', 'schuldig', 'gestresst',
+        'chagrijnig', 'nijdig', 'prikkelbaar', 'overprikkeld', 'onbegrepen', 'genegeerd',
+        'verlaten', 'gebruikt', 'tekortgedaan', 'buitengesloten', 'onrechtvaardig', 'boze',
+        'misselijk', 'duizelig', 'ongemakkelijk', 'ellendig', 'verloren', 'vast', 'gevangen',
+        'onmachtig', 'hopeloos', 'futloos', 'lusteloos', 'suf', 'moedeloos', 'radeloos',
+        'goed', 'fijn', 'oké', 'oke', 'ok', 'beroerd', 'belabberd', 'zielig', 'schuldbewust',
+        'gefrustreert', 'gestressed', 'bedroefd', 'gedeprimeerd', 'depressief', 'verdoofd',
+        'opgelaten', 'beschaamd', 'gespannen', 'onzeker', 'nerveus', 'kwetsbaar', 'gevoelig'
     ];
+
+    // Gevoelens die je "hebt": "Ik heb pijn", "Ook al heb ik heimwee ..."
+    const HAVE_NOUNS = [
+        'pijn', 'hoofdpijn', 'buikpijn', 'rugpijn', 'heimwee', 'spijt', 'last', 'haast',
+        'honger', 'dorst', 'zorgen', 'het moeilijk', 'het zwaar', 'het koud', 'het warm',
+        'het druk', 'een rotgevoel', 'een naar gevoel'
+    ];
+
+    // Gevoelens die je als zelfstandig naamwoord "voelt": "Ik voel onrust", "Ik voel druk"
+    const FEEL_NOUNS = ['druk', 'rouw', 'onmacht', 'weerstand', 'leegte', 'liefde', 'verlangen', 'walging', 'afkeer', 'haat'];
 
     function looksLikeAdjective(word) {
         if (KNOWN_ADJECTIVES.includes(word)) return true;
-        if (/(ig|lijk|loos|baar|isch|zaam|ief|eus|end)$/.test(word)) return true;
-        if (/^(ge|be|ver|over|op|uit)\S+[dt]$/.test(word)) return true; // gekwetst, overweldigd
+        if (/(ig|lijk|loos|baar|isch|zaam|ief|eus|end|ers)$/.test(word)) return true;
+        if (/^(ge|be|ver|over|op|uit|on|af|mis)\S+[dt]$/.test(word)) return true; // gekwetst, overweldigd
         return false;
     }
 
-    // Geeft { type: 'verb' | 'adjective' | 'noun', ... } terug
+    // Typisch zelfstandig naamwoord: angst, onzekerheid, spanning, schaamte, paniek, ...
+    function looksLikeNoun(word) {
+        return /(heid|ing|ingen|nis|schap|dom|te|st|ie|iek|ij|sel|teit)$/.test(word);
+    }
+
+    // Geeft { type: 'verb' | 'adjective' | 'noun' | 'have', ... } terug
     function parseEmotion(input) {
         let text = clean(input).toLowerCase();
-        // "ik voel me bang", "ik ben bang", "me bang" -> "bang"
-        text = text.replace(/^(ik\s+)?(voel\s+)?(me|mij)\s+/, '')
-                   .replace(/^ik\s+(ben|voel)\s+(me\s+|mij\s+)?/, '')
+        // "ik voel me bang", "ik ben bang", "me bang", "ik heb pijn", "voel me stom" -> kern
+        text = text.replace(/^(ik\s+)?(voel\s+)?(me|mij|mezelf|mijzelf)\s+/, '')
+                   .replace(/^(ik\s+)?(ben|voel|heb)\s+(me\s+|mij\s+|mezelf\s+)?/, '')
+                   .replace(/^ik\s+/, '')
+                   .replace(/\s+(me|mij)$/, '')          // "stom voel me" e.d.
                    .trim();
 
         if (!text) return { type: 'noun', word: 'deze emotie' };
         if (VERB_EMOTIONS[text]) return Object.assign({ type: 'verb' }, VERB_EMOTIONS[text]);
         if (NOUN_TO_ADJECTIVE[text]) return { type: 'adjective', word: NOUN_TO_ADJECTIVE[text] };
+        if (HAVE_NOUNS.includes(text)) return { type: 'have', word: text };
+        if (FEEL_NOUNS.includes(text)) return { type: 'noun', word: text };
 
-        const lastWord = text.split(' ').pop();
+        const words = text.split(' ');
+        const lastWord = words[words.length - 1];
+        // Begint met een lidwoord of hoeveelheid: "een knoop in mijn maag", "veel stress"
+        if (/^(een|de|het|veel|wat|geen|zoveel)$/.test(words[0]) && words.length > 1) {
+            return { type: 'noun', word: text };
+        }
         if (looksLikeAdjective(lastWord)) return { type: 'adjective', word: text };
+        if (looksLikeNoun(lastWord)) return { type: 'noun', word: text };
 
-        // Onbekend woord: gebruik het letterlijk als zelfstandig naamwoord ("Ik voel onrust").
-        return { type: 'noun', word: text };
+        // Onbekend woord: meestal een bijvoeglijk naamwoord ("Ik voel me stom").
+        return { type: 'adjective', word: text };
     }
 
     // "Ik voel me bang" / "Ik baal" / "Ik maak me zorgen" / "Ik voel onrust"
     function emotionPhrase(input) {
         const e = parseEmotion(input);
         if (e.type === 'verb') return ('Ik ' + e.finite + ' ' + e.rest).trim();
+        if (e.type === 'have') return 'Ik heb ' + e.word;
         if (e.type === 'adjective') return 'Ik voel me ' + e.word;
         return 'Ik voel ' + e.word;
     }
@@ -118,6 +154,7 @@
     function emotionInverted(input) {
         const e = parseEmotion(input);
         if (e.type === 'verb') return (e.finite + ' ik ' + e.rest).trim();
+        if (e.type === 'have') return 'heb ik ' + e.word;
         if (e.type === 'adjective') return 'voel ik me ' + e.word;
         return 'voel ik ' + e.word;
     }
@@ -136,15 +173,22 @@
         'overleden overlijdt regent').split(' '));
     const LOWERCASE_FIRST = /^(ik|je|jij|hij|zij|ze|we|wij|mijn|jouw|zijn|haar|ons|onze|hun|de|het|een|er|iemand|niemand|iets|niets|alles|dat|dit|die|deze|omdat|vanwege|door|ben|heb|had|was|moet|kan|wil|ga)\b/i;
 
+    const POSSESSABLE = /^(werk|baan|baas|collega|collega's|team|studie|school|opleiding|examen|tentamen|toets|presentatie|sollicitatie|gesprek|afspraak|relatie|partner|vriend|vriendin|man|vrouw|ex|moeder|vader|ouders|zus|broer|kind|kinderen|zoon|dochter|familie|schoonmoeder|schoonfamilie|buren|buurman|buurvrouw|gezondheid|lichaam|gewicht|rug|hoofd|financiën|schulden|huis|verhuizing|vakantie|verjaardag|planning|agenda|telefoon|hond|kat)\b/i;
+
     // Geeft { kind: 'clause' | 'noun', text } terug
     function parseSituation(input) {
         let text = clean(input);
         // Alleen het eerste woord naar kleine letter als het een gewoon woord is
         // (zo blijven namen als "Jan" intact).
         if (LOWERCASE_FIRST.test(text)) text = text.charAt(0).toLowerCase() + text.slice(1);
-        text = text.replace(/^(omdat|want|doordat|vanwege|door)\s+/i, '').trim();
+        text = text.replace(/^(omdat|want|doordat|vanwege|door|dat|het feit dat)\s+/i, '').trim();
+        if (LOWERCASE_FIRST.test(text)) text = text.charAt(0).toLowerCase() + text.slice(1);
 
         if (!text) return { kind: 'noun', text: 'deze situatie' };
+        // Eén los woord als "alles" of "niets": "door alles"
+        if (/^(alles|iets|niets|iedereen|niemand)$/i.test(text)) return { kind: 'noun', text: text };
+        // Kaal zelfstandig naamwoord zonder lidwoord ("werk", "presentatie morgen"): "mijn" ervoor
+        if (POSSESSABLE.test(text)) text = 'mijn ' + text;
 
         if (PRONOUN_START.test(text)) return { kind: 'clause', text: text };
         if (VERB_START.test(text)) return { kind: 'clause', text: 'ik ' + text };
@@ -169,10 +213,37 @@
         return { kind: 'noun', text: text };
     }
 
+    // Na "omdat" hoort het werkwoord achteraan: "mijn werk is te druk" -> "mijn werk te druk is",
+    // "ik kan niet slapen" -> "ik niet kan slapen". Alleen bij eenvoudige zinnen met één werkwoord.
+    const MODALS = /^(moet|kan|kon|wil|wilde|ga|zal|mag|durf)$/i;
+    const SUBCLAUSE_WORDS = /\b(dat|omdat|als|die|wie|wat|want|en|maar|of|terwijl|toen|zodat|waardoor|doordat)\b/i;
+    function verbToEnd(text) {
+        const words = text.split(' ');
+        if (words.length < 3 || SUBCLAUSE_WORDS.test(text)) return text;
+        const isVerb = w => FINITE_VERBS.has(w.toLowerCase()) || VERB_START.test(w) && w.length === w.match(VERB_START)[0].length;
+        const idx = [];
+        const hasModal = words.some(w => MODALS.test(w));
+        words.forEach((w, i) => {
+            if (hasModal && i === words.length - 1 && /(en|aan)$/i.test(w)) return;   // infinitief na moet/kan
+            if (i > 0 && isVerb(w)) idx.push(i);
+        });
+        if (idx.length !== 1) return text;
+        const i = idx[0];
+        if (i >= words.length - 1 || i > 3) return text;   // staat al achteraan, of onderwerp te lang
+        const verb = words.splice(i, 1)[0];
+        const last = words[words.length - 1];
+        if (MODALS.test(verb) && /(en|aan)$/i.test(last) && words.length - 1 > i - 1) {
+            words.splice(words.length - 1, 0, verb);        // "... kan slapen"
+        } else {
+            words.push(verb);
+        }
+        return words.join(' ');
+    }
+
     // Deel na de emotie in de opstartzin: "omdat ik ..." of "door de deadline"
     function situationConnector(input) {
         const s = parseSituation(input);
-        return (s.kind === 'clause' ? 'omdat ' : 'door ') + s.text;
+        return s.kind === 'clause' ? 'omdat ' + verbToEnd(s.text) : 'door ' + s.text;
     }
 
     // Herinneringszin voor de situatie-kloppunten

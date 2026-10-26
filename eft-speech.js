@@ -17,6 +17,24 @@
     const ERROR_MESSAGE = 'Het voorlezen lukt nu niet. Lees de zin rustig hardop terwijl je klopt, ' +
         'en tik daarna op ⏩ om naar het volgende punt te gaan.';
 
+    const SPEECH_RATE = 0.95;        // iets vlotter dan eerst (0.85), klinkt minder hakkelig
+
+    // Tekst opschonen voor de voorleesstem: geen aanhalingstekens, dubbele spaties of losse leestekens,
+    // zodat de stem de zin in één vloeiende beweging uitspreekt.
+    function cleanForSpeech(text) {
+        return String(text || '')
+            .replace(/["'“”‘’„«»]/g, '')            // aanhalingstekens
+            .replace(/[()\[\]{}*_~<>|\\/]/g, ' ')    // haakjes en andere tekens die de stem uitspreekt of laat haperen
+            .replace(/\s*(…|\.{2,})\s*/g, ' ')    // beletseltekens weg, de zin loopt door
+            .replace(/\s+([,.!?;:])/g, '$1')         // geen spatie vóór een leesteken
+            .replace(/([,;:])(?:\s*[,;:])+/g, '$1')   // dubbele komma's e.d.
+            .replace(/([.!?])(?:\s*[.!?,;:])+/g, '$1')
+            .replace(/([,.!?;:])(?=\S)/g, '$1 ')      // wel een spatie erna
+            .replace(/\s+/g, ' ')
+            .replace(/^[\s,.;:!?-]+/, '')
+            .trim();
+    }
+
     function addStyles() {
         if (document.getElementById('eft-speech-styles')) return;
         const style = document.createElement('style');
@@ -85,7 +103,7 @@
     }
 
     function init(options) {
-        const text = options.text;
+        const text = cleanForSpeech(options.text);
         const nextUrl = options.next;
         const repeats = Math.max(1, options.repeats || 1);
         const synth = global.speechSynthesis;
@@ -153,9 +171,9 @@
             const myGeneration = ++generation;
             const utterance = new global.SpeechSynthesisUtterance(text);
             utterance.lang = 'nl-NL';
-            utterance.rate = 0.85;
+            utterance.rate = SPEECH_RATE;
             utterance.pitch = 1.0;
-            utterance.volume = 0.9;
+            utterance.volume = 1.0;
             if (voice) try { utterance.voice = voice; } catch (e) { /* stem kan niet gezet worden: standaardstem */ }
 
             utterance.onend = () => {
@@ -196,7 +214,9 @@
             startTime = Date.now();
             message.hidden = true;
             setIcon('pause', 'Pauze');
-            synth.cancel();
+            // Alleen annuleren als er echt nog iets loopt: direct na cancel() spreken laat sommige
+            // stemmen (Chrome/Android) haperen of het begin van de zin overslaan.
+            if (synth.speaking || synth.pending) synth.cancel();
             speakNext();
         }
 
@@ -249,5 +269,5 @@
         return { start, pause, resume, getState: () => state };
     }
 
-    global.EFTSpeech = { init, pickVoice };
+    global.EFTSpeech = { init, pickVoice, cleanForSpeech };
 })(window);
